@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+   com.orbital3d.web.security.weblectricfence.cnfiguration.AutoConfiguration
