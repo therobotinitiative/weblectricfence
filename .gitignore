@@ -33,4 +33,5 @@ gradle/*
 gradlew*
 
 # Ignore Gradle build output directory
-build
+build/*
+bin/*
