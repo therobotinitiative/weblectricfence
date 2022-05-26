@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.orbital3d.web.security.weblectricfence.exception.AuthenticationException;
 import com.orbital3d.web.security.weblectricfence.type.Subject;
+import com.orbital3d.web.security.weblectricfence.type.UserIdentity;
 import com.orbital3d.web.security.weblectricfence.util.HashUtil;
 import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 
@@ -24,7 +25,7 @@ public class AuthenticationWorkerImpl implements AuthenticationWorker
 	public void authenticate(String userName, String password) throws AuthenticationException
 	{
 		// Authenticate
-		Object identity = authenticator.authenticate(userName, password);
+		UserIdentity identity = authenticator.authenticate(userName, password);
 
 		// Generate tokens
 		try
