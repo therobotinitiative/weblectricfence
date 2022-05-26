@@ -16,7 +16,6 @@ repositories {
     mavenCentral()
 }
 
-
 publishing {
     publications {
         maven(MavenPublication) {
@@ -40,8 +39,7 @@ dependencies {
 	implementation "org.slf4j:slf4j-api:${slf4j_version}"
 	
 	// https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-	compileOnly group: 'javax.servlet', name: 'javax.servlet-api', version: '3.0.1'
-	
+	compileOnly 'javax.servlet:javax.servlet-api:3.0.1'
 	
     // Use JUnit test framework.
     testImplementation 'junit:junit:4.13.2'

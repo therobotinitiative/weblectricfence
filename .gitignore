@@ -15,6 +15,9 @@
 .settings*
 .classpath
 
+# IDEA
+.idea/
+
 # Package Files #
 *.jar
 *.war
@@ -35,3 +38,5 @@ gradlew*
 # Ignore Gradle build output directory
 build/*
 bin/*
+boot-starter/*
+core/build/*
