@@ -15,3 +15,6 @@ which contains the paths not requiring authentication, /login for example.
 # AuthorizationMatcher
 
 # ExcludeAuthenticationFilter
+
+Implementation bean of this interface is required. DefaultExcludeAuthenticationFilter class is provided. The Spring Boot starter uses this
+implementation if "excludeFilter" is missing.
