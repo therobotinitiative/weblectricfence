@@ -27,6 +27,10 @@ public class AuthenticationWorkerImpl implements AuthenticationWorker
 		// Authenticate
 		UserIdentity identity = authenticator.authenticate(userName, password);
 
+		if (identity == null)
+		{
+			throw new AuthenticationException("Invalid UserIdentity");
+		}
 		// Generate tokens
 		try
 		{

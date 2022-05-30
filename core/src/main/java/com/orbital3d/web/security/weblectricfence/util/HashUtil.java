@@ -16,6 +16,12 @@ public class HashUtil
 		return HashUtil.fillSecure(new byte[2038]);
 	}
 
+	/**
+	 * Generates token that is considered short.
+	 * 
+	 * @return Byte array containing the generated token
+	 * @throws NoSuchAlgorithmException If hashing algorithm was not available
+	 */
 	public static byte[] generateShortToken() throws NoSuchAlgorithmException
 	{
 		return HashUtil.fillSecure(new byte[256]);

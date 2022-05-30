@@ -18,3 +18,8 @@ which contains the paths not requiring authentication, /login for example.
 
 Implementation bean of this interface is required. DefaultExcludeAuthenticationFilter class is provided. The Spring Boot starter uses this
 implementation if "excludeFilter" is missing.
+
+# AuthenticationWorker and Authenticator
+
+AuthenticationWorker handles all the authentication related actions required by the library, but the actual authentication is delegated into Authenticator
+bean which MUST be provided by the application.
