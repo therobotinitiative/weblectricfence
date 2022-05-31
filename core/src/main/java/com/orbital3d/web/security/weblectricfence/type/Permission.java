@@ -29,7 +29,7 @@ public class Permission
 	private static final String PERMISSION_SEPARATOR = ":";
 	private static final String WILDCARD = "*";
 
-	private String permission;
+	private final String permission;
 
 	private transient String[] parts;
 
@@ -51,7 +51,7 @@ public class Permission
 	/**
 	 * @see Permission#isPermitted(String)
 	 */
-	public boolean isPermitted(Permission permission)
+	public boolean isPermitted(final Permission permission)
 	{
 		return isPermitted(permission.permission);
 	}
@@ -62,7 +62,7 @@ public class Permission
 	 * @param permission {@link Permission} to check
 	 * @return true if the given permission is permitted; otherwise false
 	 */
-	public boolean isPermitted(String permission)
+	public boolean isPermitted(final String permission)
 	{
 		if (permission.equals(WILDCARD))
 		{

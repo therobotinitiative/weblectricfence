@@ -36,7 +36,7 @@ public class AuthorizationFilter extends OncePerRequestFilter
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
 	{
-		Permission permission = authorizationMatcher.getRequiredPermission(request.getRequestURI(), RequestMethod.valueOf(request.getMethod()));
+		Permission permission = authorizationMatcher.requiredPermission(request.getRequestURI(), RequestMethod.valueOf(request.getMethod()));
 		if (permission != null)
 		{
 			try

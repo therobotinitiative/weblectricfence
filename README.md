@@ -23,3 +23,8 @@ implementation if "excludeFilter" is missing.
 
 AuthenticationWorker handles all the authentication related actions required by the library, but the actual authentication is delegated into Authenticator
 bean which MUST be provided by the application.
+
+## AuthorizationMatcher
+The authorization filter uses this interface to determine if the requested path needs a specific permission. Implementing bean determines how the path is matched.
+DefaultAuthorizationMatcher is provided which uses ANT styled path matching. Application can provide application specific implementation or use the default
+implementation. This bean is required.
