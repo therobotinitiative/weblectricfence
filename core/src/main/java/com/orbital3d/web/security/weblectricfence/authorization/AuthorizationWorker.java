@@ -4,6 +4,15 @@ import com.orbital3d.web.security.weblectricfence.exception.AuthorizationExcepti
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
 
+/**
+ * Handles the library specific aauthorization mechanism. Delegates the final
+ * authorization and permission gathering into {@link Authorizer} bean which
+ * <b>must</b> be provided by the application.
+ * 
+ * @author mikko
+ * @since 0.1
+ *
+ */
 public interface AuthorizationWorker
 {
 	/**
@@ -18,7 +27,7 @@ public interface AuthorizationWorker
 	public interface Authorizer
 	{
 		/**
-		 * Retrieve permissions. Permissions should be set for the given subject.
+		 * Retrieve permissions. Permissions <b>must</b> be set for the given subject.
 		 * 
 		 * @param subject To set the permissions for
 		 */
@@ -35,7 +44,16 @@ public interface AuthorizationWorker
 		void authorize(WebLectricSubject subject, Permission permission) throws AuthorizationException;
 	}
 
+	/**
+	 * Authorize current subject for the given {@link Permission}.
+	 * 
+	 * @param permission {@link Permission} to check authority against
+	 * @throws AuthorizationException If the current subject does not have authority
+	 */
 	void authorize(Permission permission) throws AuthorizationException;
 
+	/**
+	 * @param subject {@link WebLectricSubject} to unauthorize
+	 */
 	void unauthorize(WebLectricSubject subject);
 }
