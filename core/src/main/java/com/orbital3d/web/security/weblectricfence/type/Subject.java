@@ -1,5 +1,7 @@
 package com.orbital3d.web.security.weblectricfence.type;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -24,41 +26,49 @@ public final class Subject implements WebLectricSubject
 		this.refreshToken = refreshToken;
 	}
 
+	@Override
 	public Object getIdentity()
 	{
 		return identity;
 	}
 
+	@Override
 	public void setIdentity(Object identity)
 	{
 		this.identity = identity;
 	}
 
+	@Override
 	public Set<Permission> getPermissions()
 	{
-		return permissions;
+		return Collections.unmodifiableSet(permissions);
 	}
 
+	@Override
 	public void setPermissions(Set<Permission> permissions)
 	{
-		this.permissions = permissions;
+		this.permissions = new HashSet<>(permissions);
 	}
 
+	@Override
 	public String getAuthenticationToken()
 	{
 		return authenticationToken;
 	}
 
+	@Override
 	public void setAuthenticationToken(String authenticationToken)
 	{
 		this.authenticationToken = authenticationToken;
 	}
 
+	@Override
 	public String getRefreshToken()
 	{
 		return refreshToken;
 	}
 
+	@Override
 	public void setRefreshToken(String refreshToken)
 	{
 		this.refreshToken = refreshToken;
