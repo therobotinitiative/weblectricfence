@@ -13,12 +13,12 @@ import java.util.Set;
  */
 public final class Subject implements WebLectricSubject
 {
-	private Object identity;
+	private UserIdentity identity;
 	private Set<Permission> permissions;
 	private String authenticationToken;
 	private String refreshToken;
 
-	private Subject(Object identity, Set<Permission> permissions, String authenticationToken, String refreshToken)
+	private Subject(UserIdentity identity, Set<Permission> permissions, String authenticationToken, String refreshToken)
 	{
 		this.identity = identity;
 		this.permissions = permissions;
@@ -27,13 +27,13 @@ public final class Subject implements WebLectricSubject
 	}
 
 	@Override
-	public Object getIdentity()
+	public UserIdentity getIdentity()
 	{
 		return identity;
 	}
 
 	@Override
-	public void setIdentity(Object identity)
+	public void setIdentity(UserIdentity identity)
 	{
 		this.identity = identity;
 	}
@@ -74,17 +74,17 @@ public final class Subject implements WebLectricSubject
 		this.refreshToken = refreshToken;
 	}
 
-	public static Subject of(Object identity, Set<Permission> permissions, String authenticationToken, String refreshToken)
+	public static Subject of(UserIdentity identity, Set<Permission> permissions, String authenticationToken, String refreshToken)
 	{
 		return new Subject(identity, permissions, authenticationToken, refreshToken);
 	}
 
-	public static Subject of(Object identity, Set<Permission> permissions)
+	public static Subject of(UserIdentity identity, Set<Permission> permissions)
 	{
 		return new Subject(identity, permissions, null, null);
 	}
 
-	public static Subject of(Object identity)
+	public static Subject of(UserIdentity identity)
 	{
 		return new Subject(identity, null, null, null);
 	}

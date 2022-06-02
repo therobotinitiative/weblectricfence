@@ -1,5 +1,6 @@
 package com.orbital3d.web.security.weblectricfence.type;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -16,16 +17,19 @@ public interface WebLectricSubject
 	/**
 	 * @return Application specific identity of the subject
 	 */
-	Object getIdentity();
+	UserIdentity getIdentity();
 
 	/**
-	 * Set identity for the subject. Using type {@link Object} so it can be anything
-	 * that the application chooses.
+	 * Set identity for the subject..
 	 * 
 	 * @param identity Application specific identity
 	 */
-	void setIdentity(Object identity);
+	void setIdentity(UserIdentity identity);
 
+	/**
+	 * @return Unmodifiable view of permissions; See
+	 *         {@link Collections#unmodifiableSet(Set)} for more details
+	 */
 	Set<Permission> getPermissions();
 
 	void setPermissions(Set<Permission> permissions);

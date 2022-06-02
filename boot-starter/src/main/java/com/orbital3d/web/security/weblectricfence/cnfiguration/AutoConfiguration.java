@@ -53,9 +53,9 @@ public class AutoConfiguration
 	{
 		ExcludeAuthenticationFilter excludeAuthentication = new DefaultExcludeAuthenticationFilter();
 
-		excludeAuthentication.addExcluded("/login**");
-		excludeAuthentication.addExcluded("/logout");
-		excludeAuthentication.addExcluded("/");
+		excludeAuthentication.addExcluded("/login**", null);
+		excludeAuthentication.addExcluded("/logout", null);
+		excludeAuthentication.addExcluded("/", null);
 
 		return excludeAuthentication;
 	}

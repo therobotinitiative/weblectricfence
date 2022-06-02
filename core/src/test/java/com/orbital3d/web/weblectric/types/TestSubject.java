@@ -1,5 +1,7 @@
 package com.orbital3d.web.weblectric.types;
 
+import static org.mockito.Mockito.mock;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 import com.orbital3d.web.security.weblectricfence.type.Subject;
+import com.orbital3d.web.security.weblectricfence.type.UserIdentity;
 import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
 
 public class TestSubject
@@ -16,18 +19,18 @@ public class TestSubject
 	@Test
 	public void testSFMOk()
 	{
-		Subject.of(new Object());
+		Subject.of(mock(UserIdentity.class));
 		Subject.of(null);
-		Subject.of(new Object(), Collections.emptySet());
+		Subject.of(mock(UserIdentity.class), Collections.emptySet());
 		Subject.of(null, Collections.emptySet());
-		Subject.of(new Object(), null);
+		Subject.of(mock(UserIdentity.class), null);
 		Subject.of(null, null);
 	}
 
 	@Test
 	public void testCannotModifyPermissionsAfterSet()
 	{
-		Subject s = Subject.of(new Object());
+		Subject s = Subject.of(mock(UserIdentity.class));
 		Set<Permission> perms = new HashSet<>();
 		perms.add(Permission.of("p1"));
 		perms.add(Permission.of("p2"));
@@ -42,7 +45,7 @@ public class TestSubject
 	@Test
 	public void testCannotModifyPermissionsWithGet()
 	{
-		Subject s = Subject.of(new Object());
+		Subject s = Subject.of(mock(UserIdentity.class));
 		Set<Permission> perms = new HashSet<>();
 		perms.add(Permission.of("p1"));
 		perms.add(Permission.of("p2"));
