@@ -1,6 +1,15 @@
 package com.orbital3d.web.security.weblectricfence.exception;
 
-public class AuthorizationException extends Exception
+/**
+ * AuthorizationException when a resource is being accessed that require
+ * specific permission and the current subject does not have sufficient
+ * permissions.
+ * 
+ * @author msiren
+ * @since 0.1
+ *
+ */
+public class AuthorizationException extends RuntimeException
 {
 
 	/**

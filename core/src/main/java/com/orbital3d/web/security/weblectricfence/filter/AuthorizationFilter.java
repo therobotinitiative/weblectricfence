@@ -18,7 +18,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationMatcher;
 import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationWorker;
-import com.orbital3d.web.security.weblectricfence.exception.AuthorizationException;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 
 @Component
@@ -39,15 +38,8 @@ public class AuthorizationFilter extends OncePerRequestFilter
 		Permission permission = authorizationMatcher.requiredPermission(request.getRequestURI(), RequestMethod.valueOf(request.getMethod()));
 		if (permission != null)
 		{
-			try
-			{
-				LOG.trace("Authoring URI {} requiring permission {}", request.getRequestURI(), permission);
-				authorizationWorker.authorize(permission);
-			}
-			catch (AuthorizationException e)
-			{
-				throw new ServletException(e);
-			}
+			LOG.trace("Authoring URI {} requiring permission {}", request.getRequestURI(), permission);
+			authorizationWorker.authorize(permission);
 		}
 		filterChain.doFilter(request, response);
 	}

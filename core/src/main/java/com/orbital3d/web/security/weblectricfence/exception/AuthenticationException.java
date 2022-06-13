@@ -1,6 +1,15 @@
 package com.orbital3d.web.security.weblectricfence.exception;
 
-public class AuthenticationException extends Exception
+/**
+ * AuthenticationException is thrown when a resource is being accessed without
+ * being authenticated or the requested path is not excluded from authentication
+ * chechking.
+ * 
+ * @author msiren
+ * @since 0.1
+ *
+ */
+public class AuthenticationException extends RuntimeException
 {
 
 	/**

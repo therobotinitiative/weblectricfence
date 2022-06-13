@@ -38,7 +38,7 @@ public class AuthenticationFilter extends OncePerRequestFilter
 			LOG.trace("Getting {} URI, authenticated", request.getRequestURI());
 			if (!WFUtil.isAuthenticated())
 			{
-				throw new ServletException(new AuthenticationException("Not authenticated path " + request.getRequestURI()));
+				throw new AuthenticationException("Not authenticated, path " + request.getRequestURI());
 			}
 		}
 		else

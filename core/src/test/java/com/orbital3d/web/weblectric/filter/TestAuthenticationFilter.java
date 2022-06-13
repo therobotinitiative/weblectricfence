@@ -25,6 +25,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.orbital3d.web.security.weblectricfence.exception.AuthenticationException;
 import com.orbital3d.web.security.weblectricfence.exclude.ExcludeAuthenticationFilter;
 import com.orbital3d.web.security.weblectricfence.filter.AuthenticationFilter;
 import com.orbital3d.web.security.weblectricfence.util.WFUtil;
@@ -69,7 +70,7 @@ public class TestAuthenticationFilter
 		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class))
 		{
 			wfUtilMock.when(WFUtil::isAuthenticated).thenReturn(false);
-			Assertions.assertThrows(ServletException.class, () -> {
+			Assertions.assertThrows(AuthenticationException.class, () -> {
 				authenticationFilter.doFilter(request, response, filterChain);
 			});
 		}
