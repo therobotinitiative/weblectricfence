@@ -23,7 +23,14 @@ publishing {
             artifactId = 'we-core'
             version = "${weblectric_fence_version}"
         }
+		mavenJava(MavenPublication) {
+			from components.java
+			// more goes in here
+		}
     }
+	repositories {
+		mavenLocal()
+	}
 }
 
 group = 'com.orbital3d.web.security'
