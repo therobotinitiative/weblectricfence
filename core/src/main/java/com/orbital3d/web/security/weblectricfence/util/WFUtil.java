@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.orbital3d.web.security.weblectricfence.authentication.AuthenticationToken;
 import com.orbital3d.web.security.weblectricfence.authentication.AuthenticationWorker;
 import com.orbital3d.web.security.weblectricfence.authentication.AuthenticationWorkerImpl;
 import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationWorker;
@@ -14,12 +15,10 @@ import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationWor
 import com.orbital3d.web.security.weblectricfence.exception.AuthenticationException;
 import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
 
-public class WFUtil
-{
+public class WFUtil {
 	private static ApplicationContext applicationContext;
 
-	public static void setApplicationContext(ApplicationContext applicationContext)
-	{
+	public static void setApplicationContext(ApplicationContext applicationContext) {
 		WFUtil.applicationContext = applicationContext;
 	}
 
@@ -27,26 +26,21 @@ public class WFUtil
 	private static final String AUTHENTICATION_TOKEN_KEY = "authentication-token-key";
 	private static final String REFRESH_TOKEN_KEY = "refresh-token-key";
 
-	private WFUtil()
-	{
+	private WFUtil() {
 		// Nothing
 	}
 
-	public static HttpSession getSession()
-	{
+	public static HttpSession getSession() {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpSession session = attr.getRequest().getSession();
 		return session;
 	}
 
-	public static void setSubject(WebLectricSubject subject)
-	{
-		if (subject == null)
-		{
+	public static void setSubject(WebLectricSubject subject) {
+		if (subject == null) {
 			throw new IllegalArgumentException("Subject must be set");
 		}
-		if (StringUtils.isAllBlank(subject.getAuthenticationToken()))
-		{
+		if (StringUtils.isAllBlank(subject.getAuthenticationToken())) {
 			throw new IllegalArgumentException("Authentication token must be set");
 		}
 		WFUtil.getSession().setAttribute(AUTHENTICATION_TOKEN_KEY, subject.getAuthenticationToken());
@@ -54,47 +48,38 @@ public class WFUtil
 		WFUtil.getSession().setAttribute(SUBJECT_KEY, subject);
 	}
 
-	public static WebLectricSubject getSubject()
-	{
+	public static WebLectricSubject getSubject() {
 		return (WebLectricSubject) WFUtil.getSession().getAttribute(SUBJECT_KEY);
 	}
 
-	public static void login(String userName, String password) throws AuthenticationException
-	{
-		AuthenticationWorker authWorker = applicationContext.getAutowireCapableBeanFactory().getBean(AuthenticationWorkerImpl.class);
-		authWorker.authenticate(userName, password);
+	public static void login(AuthenticationToken token) throws AuthenticationException {
+		AuthenticationWorker authWorker = applicationContext.getAutowireCapableBeanFactory()
+				.getBean(AuthenticationWorkerImpl.class);
+		authWorker.authenticate(token);
 	}
 
-	public static void logout()
-	{
-		try
-		{
+	public static void logout() {
+		try {
 			WebLectricSubject subject = (WebLectricSubject) WFUtil.getSession().getAttribute(SUBJECT_KEY);
-			AuthorizationWorker authWorker = applicationContext.getAutowireCapableBeanFactory().getBean(AuthorizationWorkerImpl.class);
-			if (subject != null)
-			{
+			AuthorizationWorker authWorker = applicationContext.getAutowireCapableBeanFactory()
+					.getBean(AuthorizationWorkerImpl.class);
+			if (subject != null) {
 				authWorker.unauthorize(subject);
 			}
 			getSession().setAttribute(SUBJECT_KEY, null);
 			getSession().invalidate();
-		}
-		catch (IllegalStateException e)
-		{
+		} catch (IllegalStateException e) {
 			// Fail silently
 		}
 	}
 
-	public static boolean isAuthenticated()
-	{
+	public static boolean isAuthenticated() {
 		WebLectricSubject subject = (WebLectricSubject) WFUtil.getSession().getAttribute(SUBJECT_KEY);
-		if (subject != null)
-		{
+		if (subject != null) {
 			String authenticationToken = subject.getAuthenticationToken();
-			if (authenticationToken != null)
-			{
+			if (authenticationToken != null) {
 				String sessionAuthenticationToken = (String) WFUtil.getSession().getAttribute(AUTHENTICATION_TOKEN_KEY);
-				if (sessionAuthenticationToken != null)
-				{
+				if (sessionAuthenticationToken != null) {
 					return sessionAuthenticationToken.equals(authenticationToken);
 				}
 			}

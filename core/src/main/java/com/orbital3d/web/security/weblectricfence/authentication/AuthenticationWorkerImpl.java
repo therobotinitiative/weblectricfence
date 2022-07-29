@@ -2,6 +2,8 @@ package com.orbital3d.web.security.weblectricfence.authentication;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,37 +11,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.orbital3d.web.security.weblectricfence.exception.AuthenticationException;
+import com.orbital3d.web.security.weblectricfence.exception.UnsupportedAuthenticationTokenException;
 import com.orbital3d.web.security.weblectricfence.type.Subject;
 import com.orbital3d.web.security.weblectricfence.type.UserIdentity;
 import com.orbital3d.web.security.weblectricfence.util.HashUtil;
 import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 
 @Component
-public class AuthenticationWorkerImpl implements AuthenticationWorker
-{
+public class AuthenticationWorkerImpl implements AuthenticationWorker {
 	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationWorkerImpl.class);
 
 	@Autowired(required = true)
-	private Authenticator authenticator;
+	List<Authenticator> authenticators;
 
-	public void authenticate(String userName, String password) throws AuthenticationException
-	{
-		// Authenticate
-		UserIdentity identity = authenticator.authenticate(userName, password);
+	public void authenticate(AuthenticationToken token) throws AuthenticationException {
+		// Find first matching Authenticator or throw exception if not found
+		Authenticator authenticator = null;
+		try {
+			authenticator = authenticators.stream().filter(auth -> auth.supports(token)).collect(Collectors.toList())
+					.get(0);
+		} catch (IndexOutOfBoundsException e) {
+			throw new UnsupportedAuthenticationTokenException();
+		}
 
-		if (identity == null)
-		{
+		UserIdentity identity = authenticator.authenticate(token);
+
+		if (identity == null) {
 			throw new AuthenticationException("Invalid UserIdentity");
 		}
 		// Generate tokens
-		try
-		{
+		try {
 			String authenticationToken = Base64.getEncoder().encodeToString(HashUtil.generateShortToken());
 			String refreshToken = Base64.getEncoder().encodeToString(HashUtil.generateToken());
 			WFUtil.setSubject(Subject.of(identity, null, authenticationToken, refreshToken));
-		}
-		catch (NoSuchAlgorithmException e)
-		{
+		} catch (NoSuchAlgorithmException e) {
 			LOG.error("Missing suitable algorithm", e);
 		}
 	}
