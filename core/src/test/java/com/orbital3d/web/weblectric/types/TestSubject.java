@@ -4,8 +4,10 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.commons.collections4.IterableUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,11 +16,9 @@ import com.orbital3d.web.security.weblectricfence.type.Subject;
 import com.orbital3d.web.security.weblectricfence.type.UserIdentity;
 import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
 
-public class TestSubject
-{
+public class TestSubject {
 	@Test
-	public void testSFMOk()
-	{
+	public void testSFMOk() {
 		Subject.of(mock(UserIdentity.class));
 		Subject.of(null);
 		Subject.of(mock(UserIdentity.class), Collections.emptySet());
@@ -28,8 +28,7 @@ public class TestSubject
 	}
 
 	@Test
-	public void testCannotModifyPermissionsAfterSet()
-	{
+	public void testCannotModifyPermissionsAfterSet() {
 		Subject s = Subject.of(mock(UserIdentity.class));
 		Set<Permission> perms = new HashSet<>();
 		perms.add(Permission.of("p1"));
@@ -37,14 +36,13 @@ public class TestSubject
 		perms.add(Permission.of("p3"));
 		perms.add(Permission.of("p4"));
 		s.setPermissions(perms);
-		Assertions.assertEquals(4, s.getPermissions().size());
+		Assertions.assertEquals(4, IterableUtils.size(s.getPermissions()));
 		perms.clear();
-		Assertions.assertEquals(4, s.getPermissions().size());
+		Assertions.assertEquals(4, IterableUtils.size(s.getPermissions()));
 	}
 
 	@Test
-	public void testCannotModifyPermissionsWithGet()
-	{
+	public void testCannotModifyPermissionsWithGet() {
 		Subject s = Subject.of(mock(UserIdentity.class));
 		Set<Permission> perms = new HashSet<>();
 		perms.add(Permission.of("p1"));
@@ -52,15 +50,17 @@ public class TestSubject
 		perms.add(Permission.of("p3"));
 		perms.add(Permission.of("p4"));
 		s.setPermissions(perms);
-		Assertions.assertEquals(4, s.getPermissions().size());
+		Assertions.assertEquals(4, IterableUtils.size(s.getPermissions()));
 		Assertions.assertThrows(UnsupportedOperationException.class, () -> {
-			s.getPermissions().clear();
+			Iterator<Permission> iter = s.getPermissions().iterator();
+			iter.next();
+			iter.remove();
+			s.getPermissions().iterator().next();
 		});
 	}
 
 	@Test
-	public void testAssignelability()
-	{
+	public void testAssignelability() {
 		Assertions.assertTrue(WebLectricSubject.class.isAssignableFrom(Subject.class));
 	}
 }

@@ -12,8 +12,7 @@ import java.util.Set;
  * @author msiren
  *
  */
-public interface WebLectricSubject
-{
+public interface WebLectricSubject {
 	/**
 	 * @return Application specific identity of the subject
 	 */
@@ -30,9 +29,9 @@ public interface WebLectricSubject
 	 * @return Unmodifiable view of permissions; See
 	 *         {@link Collections#unmodifiableSet(Set)} for more details
 	 */
-	Set<Permission> getPermissions();
+	Iterable<Permission> getPermissions();
 
-	void setPermissions(Set<Permission> permissions);
+	void setPermissions(Iterable<Permission> permissions);
 
 	/**
 	 * @return Authentication token set by

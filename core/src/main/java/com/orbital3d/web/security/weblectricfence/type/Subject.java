@@ -1,8 +1,8 @@
 package com.orbital3d.web.security.weblectricfence.type;
 
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Subject containing the session related information.
@@ -11,15 +11,14 @@ import java.util.Set;
  * @author msiren
  *
  */
-public final class Subject implements WebLectricSubject
-{
+public final class Subject implements WebLectricSubject {
 	private UserIdentity identity;
-	private Set<Permission> permissions;
+	private Iterable<Permission> permissions;
 	private String authenticationToken;
 	private String refreshToken;
 
-	private Subject(UserIdentity identity, Set<Permission> permissions, String authenticationToken, String refreshToken)
-	{
+	private Subject(UserIdentity identity, Iterable<Permission> permissions, String authenticationToken,
+			String refreshToken) {
 		this.identity = identity;
 		this.permissions = permissions;
 		this.authenticationToken = authenticationToken;
@@ -27,65 +26,57 @@ public final class Subject implements WebLectricSubject
 	}
 
 	@Override
-	public UserIdentity getIdentity()
-	{
+	public UserIdentity getIdentity() {
 		return identity;
 	}
 
 	@Override
-	public void setIdentity(UserIdentity identity)
-	{
+	public void setIdentity(UserIdentity identity) {
 		this.identity = identity;
 	}
 
 	@Override
-	public Set<Permission> getPermissions()
-	{
-		return Collections.unmodifiableSet(permissions);
+	public Iterable<Permission> getPermissions() {
+		return (Iterable<Permission>) Collections.unmodifiableCollection((Collection<Permission>) permissions);
 	}
 
 	@Override
-	public void setPermissions(Set<Permission> permissions)
-	{
-		this.permissions = new HashSet<>(permissions);
+	public void setPermissions(Iterable<Permission> permissions) {
+		// I'm no good with iterators and collection type so most likely I will revisit
+		// this
+		this.permissions = new CopyOnWriteArrayList<Permission>((Collection<? extends Permission>) permissions);
 	}
 
 	@Override
-	public String getAuthenticationToken()
-	{
+	public String getAuthenticationToken() {
 		return authenticationToken;
 	}
 
 	@Override
-	public void setAuthenticationToken(String authenticationToken)
-	{
+	public void setAuthenticationToken(String authenticationToken) {
 		this.authenticationToken = authenticationToken;
 	}
 
 	@Override
-	public String getRefreshToken()
-	{
+	public String getRefreshToken() {
 		return refreshToken;
 	}
 
 	@Override
-	public void setRefreshToken(String refreshToken)
-	{
+	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
 
-	public static Subject of(UserIdentity identity, Set<Permission> permissions, String authenticationToken, String refreshToken)
-	{
+	public static Subject of(UserIdentity identity, Iterable<Permission> permissions, String authenticationToken,
+			String refreshToken) {
 		return new Subject(identity, permissions, authenticationToken, refreshToken);
 	}
 
-	public static Subject of(UserIdentity identity, Set<Permission> permissions)
-	{
+	public static Subject of(UserIdentity identity, Iterable<Permission> permissions) {
 		return new Subject(identity, permissions, null, null);
 	}
 
-	public static Subject of(UserIdentity identity)
-	{
+	public static Subject of(UserIdentity identity) {
 		return new Subject(identity, null, null, null);
 	}
 
