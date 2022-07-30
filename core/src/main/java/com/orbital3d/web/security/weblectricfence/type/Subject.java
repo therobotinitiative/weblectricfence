@@ -44,7 +44,9 @@ public final class Subject implements WebLectricSubject {
 	public void setPermissions(Iterable<Permission> permissions) {
 		// I'm no good with iterators and collection type so most likely I will revisit
 		// this
-		this.permissions = new CopyOnWriteArrayList<Permission>((Collection<? extends Permission>) permissions);
+		this.permissions = permissions != null
+				? new CopyOnWriteArrayList<Permission>((Collection<? extends Permission>) permissions)
+				: null;
 	}
 
 	@Override
