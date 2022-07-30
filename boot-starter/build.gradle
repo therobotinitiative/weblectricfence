@@ -33,6 +33,11 @@ publishing {
 	}
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 group = 'com.orbital3d.web.security'
 version = "${weblectric_fence_version}"
 sourceCompatibility = '11'
@@ -50,4 +55,10 @@ dependencies {
 	
     // Use JUnit test framework.
     testImplementation 'junit:junit:4.13.2'
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }

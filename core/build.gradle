@@ -33,6 +33,11 @@ publishing {
 	}
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 group = 'com.orbital3d.web.security'
 version = "${weblectric_fence_version}"
 sourceCompatibility = '11'
@@ -56,4 +61,10 @@ dependencies {
 	testImplementation 'org.apache.commons:commons-collections4:4.1'
     testRuntimeOnly 'org.apache.logging.log4j:log4j-slf4j-impl:2.17.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
 }
