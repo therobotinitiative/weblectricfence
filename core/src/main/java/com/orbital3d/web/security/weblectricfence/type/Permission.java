@@ -24,8 +24,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @author msiren
  *
  */
-public class Permission
-{
+public class Permission {
 	private static final String PERMISSION_SEPARATOR = ":";
 	private static final String WILDCARD = "*";
 
@@ -34,8 +33,7 @@ public class Permission
 	private transient String[] parts;
 
 	// Enforce static factory method usage.
-	private Permission(String permission)
-	{
+	private Permission(String permission) {
 		this.permission = permission;
 		this.parts = permission.split(PERMISSION_SEPARATOR);
 	}
@@ -43,16 +41,14 @@ public class Permission
 	/**
 	 * @return Full permission string
 	 */
-	public String getPermission()
-	{
+	public String getPermission() {
 		return permission;
 	}
 
 	/**
 	 * @see Permission#isPermitted(String)
 	 */
-	public boolean isPermitted(final Permission permission)
-	{
+	public boolean isPermitted(final Permission permission) {
 		return isPermitted(permission.permission);
 	}
 
@@ -62,49 +58,39 @@ public class Permission
 	 * @param permission {@link Permission} to check
 	 * @return true if the given permission is permitted; otherwise false
 	 */
-	public boolean isPermitted(final String permission)
-	{
-		if (permission.equals(WILDCARD))
-		{
+	public boolean isPermitted(final String permission) {
+		if (permission.equals(WILDCARD)) {
 			return true;
 		}
 		return Permission.matchParts(parts, permission.split(Permission.PERMISSION_SEPARATOR));
 	}
 
-	private static boolean matchParts(String[] parts1, String[] parts2)
-	{
-		if (parts2.length > parts1.length)
-		{
-			if (!Permission.isLastWildCard(parts1))
-			{
+	private static boolean matchParts(String[] parts1, String[] parts2) {
+		if (parts2.length > parts1.length) {
+			if (!Permission.isLastWildCard(parts1)) {
 				return false;
 			}
 		}
-		if (parts1.length > parts2.length)
-		{
-			if (!Permission.isLastWildCard(parts2))
-			{
+		if (parts1.length > parts2.length) {
+			if (!Permission.isLastWildCard(parts2)) {
 				return false;
 			}
 		}
 		int shorter = (parts1.length < parts2.length) ? parts1.length : parts2.length;
-		for (int i = 0; i < shorter; i++)
-		{
-			if (!parts1[i].equalsIgnoreCase(parts2[i]) && !Permission.isWildcard(parts1[i]) && !Permission.isWildcard(parts2[i]))
-			{
+		for (int i = 0; i < shorter; i++) {
+			if (!parts1[i].equalsIgnoreCase(parts2[i]) && !Permission.isWildcard(parts1[i])
+					&& !Permission.isWildcard(parts2[i])) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	private static boolean isLastWildCard(String[] parts)
-	{
+	private static boolean isLastWildCard(String[] parts) {
 		return parts[parts.length - 1].equals(WILDCARD);
 	}
 
-	private static boolean isWildcard(String part)
-	{
+	private static boolean isWildcard(String part) {
 		return part.equals(WILDCARD);
 	}
 
@@ -112,8 +98,7 @@ public class Permission
 	 * {@inheritDoc}
 	 */
 	@Override
-	public int hashCode()
-	{
+	public int hashCode() {
 		return HashCodeBuilder.reflectionHashCode(3, 427, this);
 	}
 
@@ -121,8 +106,7 @@ public class Permission
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean equals(Object obj)
-	{
+	public boolean equals(Object obj) {
 		return EqualsBuilder.reflectionEquals(obj, this, false);
 	}
 
@@ -130,8 +114,7 @@ public class Permission
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return "[" + permission + "]";
 	}
 
@@ -142,10 +125,8 @@ public class Permission
 	 * @return New {@link Permission} instance
 	 * @throws IllegalArgumentException If the permission string is empty.
 	 */
-	public static Permission of(final String permission)
-	{
-		if (StringUtils.isAllEmpty(permission))
-		{
+	public static Permission of(final String permission) {
+		if (StringUtils.isAllEmpty(permission)) {
 			throw new IllegalArgumentException("permission must not be empty");
 		}
 		return new Permission(permission);

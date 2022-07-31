@@ -30,14 +30,13 @@ import com.orbital3d.web.security.weblectricfence.exclude.ExcludeAuthenticationF
 import com.orbital3d.web.security.weblectricfence.filter.AuthenticationFilter;
 import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 
-public class TestAuthenticationFilter
-{
+public class TestAuthenticationFilter {
 	private ExcludeAuthenticationFilter excludeFilter = null;
 	private AuthenticationFilter authenticationFilter;
 
 	@BeforeEach
-	public void init() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
-	{
+	public void init()
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		excludeFilter = mock(ExcludeAuthenticationFilter.class);
 		authenticationFilter = new AuthenticationFilter();
 		Field field = AuthenticationFilter.class.getDeclaredField("excludeFilter");
@@ -46,14 +45,12 @@ public class TestAuthenticationFilter
 	}
 
 	@Test
-	public void testNormalAuthenticated() throws ServletException, IOException
-	{
+	public void testNormalAuthenticated() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/");
 		HttpServletResponse response = new MockHttpServletResponse();
 		when(excludeFilter.isExcluded(anyString(), any(RequestMethod.class))).thenReturn(false);
-		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class)) {
 			wfUtilMock.when(WFUtil::isAuthenticated).thenReturn(true);
 			authenticationFilter.doFilter(request, response, filterChain);
 		}
@@ -61,14 +58,12 @@ public class TestAuthenticationFilter
 	}
 
 	@Test
-	public void testNormalNotAuthenticated() throws ServletException, IOException
-	{
+	public void testNormalNotAuthenticated() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/");
 		HttpServletResponse response = new MockHttpServletResponse();
 		when(excludeFilter.isExcluded(anyString(), any(RequestMethod.class))).thenReturn(false);
-		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class)) {
 			wfUtilMock.when(WFUtil::isAuthenticated).thenReturn(false);
 			Assertions.assertThrows(AuthenticationException.class, () -> {
 				authenticationFilter.doFilter(request, response, filterChain);
@@ -78,14 +73,12 @@ public class TestAuthenticationFilter
 	}
 
 	@Test
-	public void testNormalExcluded() throws ServletException, IOException
-	{
+	public void testNormalExcluded() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		when(excludeFilter.isExcluded(eq("/path/"), eq(RequestMethod.GET))).thenReturn(true);
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/");
 		HttpServletResponse response = new MockHttpServletResponse();
-		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class)) {
 			wfUtilMock.when(WFUtil::isAuthenticated).thenReturn(false);
 			authenticationFilter.doFilter(request, response, filterChain);
 			wfUtilMock.verify(WFUtil::isAuthenticated, times(0));
@@ -94,16 +87,14 @@ public class TestAuthenticationFilter
 	}
 
 	@Test
-	public void testNormalExcludedrm() throws ServletException, IOException
-	{
+	public void testNormalExcludedrm() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		excludeFilter.addExcluded("/path/", RequestMethod.POST);
 		when(excludeFilter.isExcluded(eq("/path/"), eq(RequestMethod.POST))).thenReturn(true);
 		when(excludeFilter.isExcluded(eq("/path/"), eq(RequestMethod.GET))).thenReturn(false);
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/");
 		HttpServletResponse response = new MockHttpServletResponse();
-		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class)) {
 			wfUtilMock.when(WFUtil::isAuthenticated).thenReturn(true);
 			authenticationFilter.doFilter(request, response, filterChain);
 			wfUtilMock.verify(WFUtil::isAuthenticated, times(1));
@@ -112,14 +103,12 @@ public class TestAuthenticationFilter
 	}
 
 	@Test
-	public void testException1() throws ServletException, IOException
-	{
+	public void testException1() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		when(excludeFilter.isExcluded(eq("/path/"), eq(RequestMethod.GET))).thenReturn(false);
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/");
 		HttpServletResponse response = new MockHttpServletResponse();
-		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class)) {
 			wfUtilMock.when(WFUtil::isAuthenticated).thenThrow(NullPointerException.class);
 			Assertions.assertThrows(NullPointerException.class, () -> {
 				authenticationFilter.doFilter(request, response, filterChain);
@@ -129,20 +118,16 @@ public class TestAuthenticationFilter
 	}
 
 	@Test
-	public void testException2() throws ServletException, IOException
-	{
+	public void testException2() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		when(excludeFilter.isExcluded(eq("/path/"), eq(RequestMethod.GET))).thenReturn(false);
-		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/")
-		{
-			public String getRequestURI()
-			{
+		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/") {
+			public String getRequestURI() {
 				throw new NullPointerException();
 			};
 		};
 		HttpServletResponse response = new MockHttpServletResponse();
-		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtilMock = mockStatic(WFUtil.class)) {
 			wfUtilMock.when(WFUtil::isAuthenticated).thenReturn(true);
 			Assertions.assertThrows(NullPointerException.class, () -> {
 				authenticationFilter.doFilter(request, response, filterChain);

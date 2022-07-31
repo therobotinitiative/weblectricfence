@@ -38,8 +38,7 @@ import com.orbital3d.web.security.weblectricfence.util.WFUtil;
  */
 @Configuration
 @ComponentScan(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Controller.class))
-public class AutoConfiguration
-{
+public class AutoConfiguration {
 	private static final Logger LOG = LoggerFactory.getLogger(AutoConfiguration.class);
 
 	/**
@@ -49,8 +48,7 @@ public class AutoConfiguration
 	 */
 	@Bean
 	@ConditionalOnMissingBean(name = "excludeFilter")
-	public ExcludeAuthenticationFilter excludeFilter()
-	{
+	public ExcludeAuthenticationFilter excludeFilter() {
 		ExcludeAuthenticationFilter excludeAuthentication = new DefaultExcludeAuthenticationFilter();
 
 		excludeAuthentication.addExcluded("/login**", null);
@@ -61,31 +59,25 @@ public class AutoConfiguration
 	}
 
 	// Only if AliasFor annotation worked we would not need this method.
-	private Pair<String[], RequestMethod> findPaths(Method m)
-	{
+	private Pair<String[], RequestMethod> findPaths(Method m) {
 		GetMapping gem = AnnotationUtils.findAnnotation(m, GetMapping.class);
-		if (gem != null)
-		{
+		if (gem != null) {
 			return Pair.of(gem.path(), RequestMethod.GET);
 		}
 		PostMapping pom = AnnotationUtils.findAnnotation(m, PostMapping.class);
-		if (pom != null)
-		{
+		if (pom != null) {
 			return Pair.of(pom.path(), RequestMethod.POST);
 		}
 		PutMapping pum = AnnotationUtils.findAnnotation(m, PutMapping.class);
-		if (pum != null)
-		{
+		if (pum != null) {
 			return Pair.of(pum.path(), RequestMethod.PUT);
 		}
 		DeleteMapping dem = AnnotationUtils.findAnnotation(m, DeleteMapping.class);
-		if (dem != null)
-		{
+		if (dem != null) {
 			return Pair.of(dem.path(), RequestMethod.DELETE);
 		}
 		PatchMapping pam = AnnotationUtils.findAnnotation(m, PatchMapping.class);
-		if (pam != null)
-		{
+		if (pam != null) {
 			return Pair.of(pam.path(), RequestMethod.PATCH);
 		}
 		return null;
@@ -102,29 +94,25 @@ public class AutoConfiguration
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public AuthorizationMatcher authorizationMatcher(ApplicationContext applicationContext)
-	{
+	public AuthorizationMatcher authorizationMatcher(ApplicationContext applicationContext) {
 		AuthorizationMatcher authorizationMatcher = new DefaultAuthorizationMatcher();
 		WFUtil.setApplicationContext(applicationContext);
 
 		LOG.trace("Scanning end point for required permission");
-		if (applicationContext != null)
-		{
-			for (String beanName : applicationContext.getBeanNamesForAnnotation(Controller.class))
-			{
-				for (Method method : applicationContext.getAutowireCapableBeanFactory().getType(beanName).getDeclaredMethods())
-				{
+		if (applicationContext != null) {
+			for (String beanName : applicationContext.getBeanNamesForAnnotation(Controller.class)) {
+				for (Method method : applicationContext.getAutowireCapableBeanFactory().getType(beanName)
+						.getDeclaredMethods()) {
 					RequiresPermission requiresPermission = method.getAnnotation(RequiresPermission.class);
-					if (requiresPermission != null)
-					{
+					if (requiresPermission != null) {
 						Pair<String[], RequestMethod> paths = findPaths(method);
-						if (paths != null)
-						{
+						if (paths != null) {
 							// Paths are returned as an array, this simply flattens them out
-							for (String path : paths.getLeft())
-							{
-								LOG.trace("Adding path with required permission: ({}) [{}]({})", requiresPermission.value(), paths.getRight(), path);
-								authorizationMatcher.append(AuthorizationMatcher.EndPointContainer.of(path, paths.getRight(), Permission.of(requiresPermission.value())));
+							for (String path : paths.getLeft()) {
+								LOG.trace("Adding path with required permission: ({}) [{}]({})",
+										requiresPermission.value(), paths.getRight(), path);
+								authorizationMatcher.append(AuthorizationMatcher.EndPointContainer.of(path,
+										paths.getRight(), Permission.of(requiresPermission.value())));
 							}
 						}
 					}
@@ -143,8 +131,7 @@ public class AutoConfiguration
 	 */
 	@Bean
 	@ConditionalOnMissingBean
-	public RequestContextListener requestContextListener()
-	{
+	public RequestContextListener requestContextListener() {
 		return new RequestContextListener();
 	}
 }

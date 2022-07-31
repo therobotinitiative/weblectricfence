@@ -10,19 +10,16 @@ import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationMat
 import com.orbital3d.web.security.weblectricfence.authorization.DefaultAuthorizationMatcher;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 
-public class TestDefaultAuthorizationMatcher
-{
+public class TestDefaultAuthorizationMatcher {
 	private AuthorizationMatcher am;
 
 	@BeforeEach
-	public void init()
-	{
+	public void init() {
 		am = new DefaultAuthorizationMatcher();
 	}
 
 	@Test
-	public void testAppendOk()
-	{
+	public void testAppendOk() {
 		EndPointContainer epc1 = EndPointContainer.of("/path1", RequestMethod.GET, Permission.of("perm"));
 		EndPointContainer epc2 = EndPointContainer.of("/path2", RequestMethod.GET, Permission.of("perm"));
 		EndPointContainer epc3 = EndPointContainer.of("/path1", RequestMethod.GET, Permission.of("perm1"));
@@ -32,8 +29,7 @@ public class TestDefaultAuthorizationMatcher
 	}
 
 	@Test
-	public void testAppendMultipleTimesOk()
-	{
+	public void testAppendMultipleTimesOk() {
 		EndPointContainer epc1 = EndPointContainer.of("/path1", RequestMethod.GET, Permission.of("perm"));
 		am.append(epc1);
 		am.append(epc1);
@@ -41,8 +37,7 @@ public class TestDefaultAuthorizationMatcher
 	}
 
 	@Test
-	public void testAppendMultipleTimesPermissionFound()
-	{
+	public void testAppendMultipleTimesPermissionFound() {
 		final String path = "/path";
 		Permission p = Permission.of("perm");
 		EndPointContainer epc1 = EndPointContainer.of(path, RequestMethod.GET, p);
@@ -53,8 +48,7 @@ public class TestDefaultAuthorizationMatcher
 	}
 
 	@Test
-	public void testPathPermissionFound()
-	{
+	public void testPathPermissionFound() {
 		final String path = "/path";
 		Permission p = Permission.of("perm1");
 		EndPointContainer epc1 = EndPointContainer.of(path, RequestMethod.GET, p);
@@ -67,14 +61,12 @@ public class TestDefaultAuthorizationMatcher
 	}
 
 	@Test
-	public void testPathNotFoundOnEmpty()
-	{
+	public void testPathNotFoundOnEmpty() {
 		Assertions.assertNull(am.requiredPermission("/path", RequestMethod.GET));
 	}
 
 	@Test
-	public void testPathPermissionRequestMethodNot()
-	{
+	public void testPathPermissionRequestMethodNot() {
 		final String path = "/path";
 		Permission p1 = Permission.of("perm1");
 		Permission p2 = Permission.of("perm1:perm2");
@@ -90,8 +82,7 @@ public class TestDefaultAuthorizationMatcher
 	}
 
 	@Test
-	public void testIllegalArgument()
-	{
+	public void testIllegalArgument() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			am.append(null);
 		});
@@ -110,8 +101,7 @@ public class TestDefaultAuthorizationMatcher
 	}
 
 	@Test
-	public void testANTStyleParhMatching()
-	{
+	public void testANTStyleParhMatching() {
 		final String path1 = "/path/{param}";
 		final String path1_param = "/path/parameter";
 		final String path2 = "/path/";

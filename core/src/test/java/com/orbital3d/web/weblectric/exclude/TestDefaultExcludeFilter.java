@@ -11,19 +11,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.orbital3d.web.security.weblectricfence.exclude.DefaultExcludeAuthenticationFilter;
 import com.orbital3d.web.security.weblectricfence.exclude.ExcludeAuthenticationFilter;
 
-public class TestDefaultExcludeFilter
-{
+public class TestDefaultExcludeFilter {
 	private ExcludeAuthenticationFilter excludeFilter = null;
 
 	@BeforeEach
-	public void initTest()
-	{
+	public void initTest() {
 		excludeFilter = new DefaultExcludeAuthenticationFilter();
 	}
 
 	@Test
-	public void testAddValidURI()
-	{
+	public void testAddValidURI() {
 		excludeFilter.addExcluded("/login", null);
 		excludeFilter.addExcluded("/login*", null);
 		excludeFilter.addExcluded("/login**", null);
@@ -33,8 +30,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testInvalidURI()
-	{
+	public void testInvalidURI() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			excludeFilter.addExcluded(null, null);
 		});
@@ -47,8 +43,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testIgnoreRM1()
-	{
+	public void testIgnoreRM1() {
 		excludeFilter.addExcluded("/uri", RequestMethod.DELETE);
 		Assertions.assertTrue(excludeFilter.isExcluded("/uri"));
 		Assertions.assertTrue(excludeFilter.isExcluded("/uri", RequestMethod.DELETE));
@@ -62,8 +57,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testIgnoreRM2()
-	{
+	public void testIgnoreRM2() {
 		excludeFilter.addExcluded("/uri", null);
 		Assertions.assertTrue(excludeFilter.isExcluded("/uri"));
 		Assertions.assertTrue(excludeFilter.isExcluded("/uri", RequestMethod.DELETE));
@@ -77,8 +71,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testPathAlreadyExcluded1()
-	{
+	public void testPathAlreadyExcluded1() {
 		excludeFilter.addExcluded("/path", null);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			excludeFilter.addExcluded("/path", RequestMethod.GET);
@@ -86,8 +79,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testPathAlreadyExcluded2()
-	{
+	public void testPathAlreadyExcluded2() {
 		excludeFilter.addExcluded("/path", RequestMethod.GET);
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			excludeFilter.addExcluded("/path", null);
@@ -95,8 +87,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testExcludeDifferentRM()
-	{
+	public void testExcludeDifferentRM() {
 		excludeFilter.addExcluded("/path", RequestMethod.DELETE);
 		excludeFilter.addExcluded("/path", RequestMethod.GET);
 		excludeFilter.addExcluded("/path", RequestMethod.HEAD);
@@ -111,8 +102,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testAddMapOk()
-	{
+	public void testAddMapOk() {
 		Map<String, RequestMethod> e = new HashMap<>();
 		e.put("/path1", RequestMethod.GET);
 		e.put("/path1", RequestMethod.POST);
@@ -122,8 +112,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testAddMapFaulty1()
-	{
+	public void testAddMapFaulty1() {
 		Map<String, RequestMethod> excludeMap = new HashMap<>();
 		excludeMap.put("/path1", RequestMethod.GET);
 		excludeMap.put("/path2", RequestMethod.GET);
@@ -135,8 +124,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testAddMapFaulty2()
-	{
+	public void testAddMapFaulty2() {
 		Map<String, RequestMethod> excludeMap = new HashMap<>();
 		excludeMap.put("/path1", RequestMethod.GET);
 		excludeMap.put("/path2", RequestMethod.GET);
@@ -151,8 +139,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testAddMapFaulty3()
-	{
+	public void testAddMapFaulty3() {
 		Map<String, RequestMethod> excludeMap = new HashMap<>();
 		excludeMap.put("/path1", null);
 		excludeMap.put("/path2", RequestMethod.GET);
@@ -167,8 +154,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testAddMapFaulty4()
-	{
+	public void testAddMapFaulty4() {
 		Map<String, RequestMethod> excludeMap = new HashMap<>();
 		excludeMap.put("/path1", RequestMethod.GET);
 		excludeMap.put("/path2", RequestMethod.GET);
@@ -180,8 +166,7 @@ public class TestDefaultExcludeFilter
 	}
 
 	@Test
-	public void testAddMapFaulty5()
-	{
+	public void testAddMapFaulty5() {
 		Map<String, RequestMethod> excludeMap = new HashMap<>();
 		excludeMap.put("/path1", RequestMethod.GET);
 		excludeMap.put("/path2", RequestMethod.GET);

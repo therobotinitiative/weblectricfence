@@ -22,8 +22,7 @@ import com.orbital3d.web.security.weblectricfence.type.Permission;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE - 1)
-public class AuthorizationFilter extends OncePerRequestFilter
-{
+public class AuthorizationFilter extends OncePerRequestFilter {
 	private static final Logger LOG = LoggerFactory.getLogger(AuthorizationFilter.class);
 
 	@Autowired(required = true)
@@ -33,11 +32,11 @@ public class AuthorizationFilter extends OncePerRequestFilter
 	private AuthorizationWorker authorizationWorker;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
-	{
-		Permission permission = authorizationMatcher.requiredPermission(request.getRequestURI(), RequestMethod.valueOf(request.getMethod()));
-		if (permission != null)
-		{
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
+		Permission permission = authorizationMatcher.requiredPermission(request.getRequestURI(),
+				RequestMethod.valueOf(request.getMethod()));
+		if (permission != null) {
 			LOG.trace("Authoring URI {} requiring permission {}", request.getRequestURI(), permission);
 			authorizationWorker.authorize(permission);
 		}

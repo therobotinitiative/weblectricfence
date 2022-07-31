@@ -18,29 +18,25 @@ import com.orbital3d.web.security.weblectricfence.type.Permission;
  * @author msiren
  *
  */
-public class DefaultAuthorizationMatcher implements AuthorizationMatcher
-{
+public class DefaultAuthorizationMatcher implements AuthorizationMatcher {
 	private Set<AuthorizationMatcher.EndPointContainer> permissionedEndPoints = new HashSet<>();
 
 	private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 	@Override
-	public Permission requiredPermission(String path, RequestMethod method)
-	{
-		if (StringUtils.isBlank(path) || method == null)
-		{
+	public Permission requiredPermission(String path, RequestMethod method) {
+		if (StringUtils.isBlank(path) || method == null) {
 			throw new IllegalArgumentException();
 		}
-		Optional<AuthorizationMatcher.EndPointContainer> permissionEntry = permissionedEndPoints.stream()
-				.filter(endPoint -> antPathMatcher.match(endPoint.getPath(), path) && endPoint.getMethod().equals(method)).findFirst();
+		Optional<AuthorizationMatcher.EndPointContainer> permissionEntry = permissionedEndPoints.stream().filter(
+				endPoint -> antPathMatcher.match(endPoint.getPath(), path) && endPoint.getMethod().equals(method))
+				.findFirst();
 		return permissionEntry.isPresent() ? permissionEntry.get().getPermission() : null;
 	}
 
 	@Override
-	public void append(EndPointContainer endPointContainer)
-	{
-		if (endPointContainer == null)
-		{
+	public void append(EndPointContainer endPointContainer) {
+		if (endPointContainer == null) {
 			throw new IllegalArgumentException();
 		}
 		permissionedEndPoints.add(endPointContainer);

@@ -9,36 +9,31 @@ package com.orbital3d.web.security.weblectricfence.exception;
  * @since 0.1
  *
  */
-public class AuthenticationException extends RuntimeException
-{
+public class AuthenticationException extends RuntimeException {
 
 	/**
 	 * Generate
 	 */
 	private static final long serialVersionUID = -5482749998068309779L;
 
-	public AuthenticationException()
-	{
+	public AuthenticationException() {
 		super();
 	}
 
-	public AuthenticationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace)
-	{
+	public AuthenticationException(String message, Throwable cause, boolean enableSuppression,
+			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 	}
 
-	public AuthenticationException(String message, Throwable cause)
-	{
+	public AuthenticationException(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public AuthenticationException(String message)
-	{
+	public AuthenticationException(String message) {
 		super(message);
 	}
 
-	public AuthenticationException(Throwable cause)
-	{
+	public AuthenticationException(Throwable cause) {
 		super(cause);
 	}
 

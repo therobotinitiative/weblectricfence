@@ -4,15 +4,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-public class HashUtil
-{
-	private HashUtil()
-	{
+public class HashUtil {
+	private HashUtil() {
 		// Only static methods
 	}
 
-	public static byte[] generateToken() throws NoSuchAlgorithmException
-	{
+	public static byte[] generateToken() throws NoSuchAlgorithmException {
 		return HashUtil.fillSecure(new byte[2038]);
 	}
 
@@ -22,13 +19,11 @@ public class HashUtil
 	 * @return Byte array containing the generated token
 	 * @throws NoSuchAlgorithmException If hashing algorithm was not available
 	 */
-	public static byte[] generateShortToken() throws NoSuchAlgorithmException
-	{
+	public static byte[] generateShortToken() throws NoSuchAlgorithmException {
 		return HashUtil.fillSecure(new byte[256]);
 	}
 
-	public static byte[] fillSecure(byte[] arrayToFill) throws NoSuchAlgorithmException
-	{
+	public static byte[] fillSecure(byte[] arrayToFill) throws NoSuchAlgorithmException {
 		// Using .getInstancceStrong causes the system to halt in linux. Read
 		// https://stackoverflow.com/questions/137212/how-to-deal-with-a-slow-securerandom-generator
 		// for more
@@ -37,8 +32,7 @@ public class HashUtil
 		return arrayToFill;
 	}
 
-	public static byte[] secureHash(byte[] arrayToHash) throws NoSuchAlgorithmException
-	{
+	public static byte[] secureHash(byte[] arrayToHash) throws NoSuchAlgorithmException {
 		return MessageDigest.getInstance("SHA-512").digest(arrayToHash);
 	}
 }

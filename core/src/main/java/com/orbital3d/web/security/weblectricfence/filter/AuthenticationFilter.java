@@ -22,27 +22,22 @@ import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
-public class AuthenticationFilter extends OncePerRequestFilter
-{
+public class AuthenticationFilter extends OncePerRequestFilter {
 	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 
 	@Autowired
 	private ExcludeAuthenticationFilter excludeFilter;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException
-	{
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+			throws ServletException, IOException {
 
-		if (!excludeFilter.isExcluded(request.getRequestURI(), RequestMethod.valueOf(request.getMethod())))
-		{
+		if (!excludeFilter.isExcluded(request.getRequestURI(), RequestMethod.valueOf(request.getMethod()))) {
 			LOG.trace("Getting {} URI, authenticated", request.getRequestURI());
-			if (!WFUtil.isAuthenticated())
-			{
+			if (!WFUtil.isAuthenticated()) {
 				throw new AuthenticationException("Not authenticated, path " + request.getRequestURI());
 			}
-		}
-		else
-		{
+		} else {
 			LOG.trace("URI {} excluded from authentication checking", request.getRequestURI());
 		}
 		filterChain.doFilter(request, response);

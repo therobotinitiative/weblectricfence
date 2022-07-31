@@ -6,7 +6,6 @@ package com.orbital3d.web.security.weblectricfence.type;
  * @author msiren
  *
  */
-public interface UserIdentity
-{
+public interface UserIdentity {
 	// Type interface
 }

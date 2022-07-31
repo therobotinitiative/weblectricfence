@@ -13,8 +13,7 @@ import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
  * @since 0.1
  *
  */
-public interface AuthorizationWorker
-{
+public interface AuthorizationWorker {
 	/**
 	 * Authorization interface. Authorization specific code is delegated to this
 	 * interface. Application can implement this interface to work with the
@@ -24,8 +23,7 @@ public interface AuthorizationWorker
 	 * @author msiren
 	 *
 	 */
-	public interface Authorizer
-	{
+	public interface Authorizer {
 		/**
 		 * Retrieve permissions. Permissions <b>must</b> be set for the given subject.
 		 * 

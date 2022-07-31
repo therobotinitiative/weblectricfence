@@ -29,15 +29,14 @@ import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
 import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 
 @ExtendWith(MockitoExtension.class)
-public class TestAuthorizationWorker
-{
+public class TestAuthorizationWorker {
 	private AuthorizationWorker authorizerWorker;
 	@Mock
 	private Authorizer authorizer;
 
 	@BeforeEach
-	public void init() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException
-	{
+	public void init()
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		authorizerWorker = new AuthorizationWorkerImpl();
 		Field field = AuthorizationWorkerImpl.class.getDeclaredField("authorizer");
 		field.setAccessible(true);
@@ -45,12 +44,10 @@ public class TestAuthorizationWorker
 	}
 
 	@Test
-	public void testAuthorizeOk_donotgatherpermissions() throws AuthorizationException
-	{
+	public void testAuthorizeOk_donotgatherpermissions() throws AuthorizationException {
 		WebLectricSubject subjectMock = mock(WebLectricSubject.class);
 		final Permission permission = Permission.of("perm");
-		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class)) {
 			wfUtil.when(WFUtil::getSubject).thenReturn(subjectMock);
 			authorizerWorker.authorize(permission);
 			verify(authorizer).authorize(eq(subjectMock), eq(permission));
@@ -59,13 +56,11 @@ public class TestAuthorizationWorker
 	}
 
 	@Test
-	public void testAuthorizeOk_firsttimepermissiongathering() throws AuthorizationException
-	{
+	public void testAuthorizeOk_firsttimepermissiongathering() throws AuthorizationException {
 		WebLectricSubject subjectMock = mock(WebLectricSubject.class);
 		when(subjectMock.getPermissions()).thenReturn(null);
 		final Permission permission = Permission.of("perm");
-		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class)) {
 			wfUtil.when(WFUtil::getSubject).thenReturn(subjectMock);
 			authorizerWorker.authorize(permission);
 			verify(authorizer).authorize(eq(subjectMock), eq(permission));
@@ -74,13 +69,11 @@ public class TestAuthorizationWorker
 	}
 
 	@Test
-	public void testAuthorizeOk_firsttimepermissiongathering2() throws AuthorizationException
-	{
+	public void testAuthorizeOk_firsttimepermissiongathering2() throws AuthorizationException {
 		WebLectricSubject subjectMock = mock(WebLectricSubject.class);
 		when(subjectMock.getPermissions()).thenReturn(null);
 		final Permission permission = Permission.of("perm");
-		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class)) {
 			wfUtil.when(WFUtil::getSubject).thenReturn(subjectMock);
 			authorizerWorker.authorize(permission);
 			when(subjectMock.getPermissions()).thenReturn(Collections.emptySet());
@@ -92,14 +85,12 @@ public class TestAuthorizationWorker
 	}
 
 	@Test
-	public void testAuthorizeOk_permissionsgathered1() throws AuthorizationException
-	{
+	public void testAuthorizeOk_permissionsgathered1() throws AuthorizationException {
 		WebLectricSubject subjectMock = mock(WebLectricSubject.class);
 		when(subjectMock.getPermissions()).thenReturn(null);
 		final Permission permission = Permission.of("perm");
 		final Set<Permission> permssions = Collections.emptySet();
-		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class)) {
 			wfUtil.when(WFUtil::getSubject).thenReturn(subjectMock);
 			when(subjectMock.getPermissions()).thenReturn(permssions);
 			authorizerWorker.authorize(permission);
@@ -109,14 +100,12 @@ public class TestAuthorizationWorker
 	}
 
 	@Test
-	public void testAuthorizeOk_permissionsgathered2() throws AuthorizationException
-	{
+	public void testAuthorizeOk_permissionsgathered2() throws AuthorizationException {
 		WebLectricSubject subjectMock = mock(WebLectricSubject.class);
 		when(subjectMock.getPermissions()).thenReturn(null);
 		final Permission permission = Permission.of("perm");
 		final Set<Permission> permssions = Collections.emptySet();
-		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class)) {
 			wfUtil.when(WFUtil::getSubject).thenReturn(subjectMock);
 			when(subjectMock.getPermissions()).thenReturn(permssions);
 			authorizerWorker.authorize(permission);
@@ -129,14 +118,12 @@ public class TestAuthorizationWorker
 	}
 
 	@Test
-	public void testAuthorizeOk_gatherpermissionsafterunauthorize() throws AuthorizationException
-	{
+	public void testAuthorizeOk_gatherpermissionsafterunauthorize() throws AuthorizationException {
 		WebLectricSubject subjectMock = mock(WebLectricSubject.class);
 		when(subjectMock.getPermissions()).thenReturn(null);
 		final Permission permission = Permission.of("perm");
 		final Set<Permission> permssions = Collections.emptySet();
-		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class))
-		{
+		try (MockedStatic<WFUtil> wfUtil = mockStatic(WFUtil.class)) {
 			wfUtil.when(WFUtil::getSubject).thenReturn(subjectMock);
 			when(subjectMock.getPermissions()).thenReturn(permssions);
 			authorizerWorker.authorize(permission);
@@ -152,16 +139,14 @@ public class TestAuthorizationWorker
 	}
 
 	@Test
-	public void testUnauthorizeOk()
-	{
+	public void testUnauthorizeOk() {
 		WebLectricSubject subjectMock = mock(WebLectricSubject.class);
 		authorizerWorker.unauthorize(subjectMock);
 		verify(subjectMock).setPermissions(isNull());
 	}
 
 	@Test
-	public void testUnauthorizeMulripleTimes()
-	{
+	public void testUnauthorizeMulripleTimes() {
 		WebLectricSubject subjectMock = mock(WebLectricSubject.class);
 		authorizerWorker.unauthorize(subjectMock);
 		authorizerWorker.unauthorize(subjectMock);

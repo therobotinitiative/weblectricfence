@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @since 0.1
  *
  */
-public interface ExcludeAuthenticationFilter
-{
+public interface ExcludeAuthenticationFilter {
 	/**
 	 * Add path to be excluded from authentication check with {@link RequestMethod}
 	 * specified. If the {@link RequestMethod} is null the

@@ -7,17 +7,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationMatcher.EndPointContainer;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 
-public class TestEndPointContainer
-{
+public class TestEndPointContainer {
 	@Test
-	public void testSFMOk()
-	{
+	public void testSFMOk() {
 		EndPointContainer.of("/", RequestMethod.DELETE, Permission.of("perm"));
 	}
 
 	@Test
-	public void testSFMException()
-	{
+	public void testSFMException() {
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			EndPointContainer.of(null, RequestMethod.DELETE, Permission.of("perm"));
 		});
@@ -36,8 +33,7 @@ public class TestEndPointContainer
 	}
 
 	@Test
-	public void testEquals()
-	{
+	public void testEquals() {
 		final Permission p1 = Permission.of("perm");
 		final Permission p2 = Permission.of("perm2");
 		EndPointContainer epc1 = EndPointContainer.of("/app/[param}", RequestMethod.GET, p1);

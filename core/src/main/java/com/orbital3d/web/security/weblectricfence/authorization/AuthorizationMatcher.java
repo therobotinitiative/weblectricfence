@@ -17,47 +17,39 @@ import com.orbital3d.web.security.weblectricfence.type.Permission;
  * @since 0.1
  *
  */
-public interface AuthorizationMatcher
-{
+public interface AuthorizationMatcher {
 	// Container class for end point that requires permission
-	public static final class EndPointContainer
-	{
+	public static final class EndPointContainer {
 		private final String path;
 		private final RequestMethod method;
 		private final Permission permission;
 
 		// Enforce static factory method usage.
-		private EndPointContainer(String path, RequestMethod method, Permission permission)
-		{
+		private EndPointContainer(String path, RequestMethod method, Permission permission) {
 			this.path = path;
 			this.method = method;
 			this.permission = permission;
 		}
 
-		public String getPath()
-		{
+		public String getPath() {
 			return path;
 		}
 
-		public RequestMethod getMethod()
-		{
+		public RequestMethod getMethod() {
 			return method;
 		}
 
-		public Permission getPermission()
-		{
+		public Permission getPermission() {
 			return permission;
 		}
 
 		@Override
-		public boolean equals(Object obj)
-		{
+		public boolean equals(Object obj) {
 			return EqualsBuilder.reflectionEquals(obj, this, false);
 		}
 
 		@Override
-		public int hashCode()
-		{
+		public int hashCode() {
 			return HashCodeBuilder.reflectionHashCode(this, false);
 		}
 
@@ -71,14 +63,11 @@ public interface AuthorizationMatcher
 		 * @throws IllegalArgumentException If path is empty or {@link Permission} is
 		 *                                  null
 		 */
-		public static EndPointContainer of(final String path, final RequestMethod method, final Permission permission)
-		{
-			if (StringUtils.isAllBlank(path))
-			{
+		public static EndPointContainer of(final String path, final RequestMethod method, final Permission permission) {
+			if (StringUtils.isAllBlank(path)) {
 				throw new IllegalArgumentException("Path must not be empty");
 			}
-			if (method == null || permission == null)
-			{
+			if (method == null || permission == null) {
 				throw new IllegalArgumentException("Permission must not be null");
 			}
 			return new EndPointContainer(path, method, permission);
