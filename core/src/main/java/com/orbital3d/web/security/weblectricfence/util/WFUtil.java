@@ -1,5 +1,6 @@
 package com.orbital3d.web.security.weblectricfence.util;
 
+import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
@@ -52,7 +53,7 @@ public class WFUtil {
 		return (WebLectricSubject) WFUtil.getSession().getAttribute(SUBJECT_KEY);
 	}
 
-	public static void login(AuthenticationToken token) throws AuthenticationException {
+	public static void login(AuthenticationToken token) throws AuthenticationException, LoginException {
 		AuthenticationWorker authWorker = applicationContext.getAutowireCapableBeanFactory()
 				.getBean(AuthenticationWorkerImpl.class);
 		authWorker.authenticate(token);

@@ -9,31 +9,23 @@ import org.junit.jupiter.api.Test;
 
 import com.orbital3d.web.security.weblectricfence.util.HashUtil;
 
-public class HashUtilTests
-{
+public class HashUtilTests {
 
 	@Test
-	public void testAlgorithmAvailable()
-	{
-		try
-		{
+	public void testAlgorithmAvailable() {
+		try {
 			HashUtil.fillSecure(new byte[1024]);
-		}
-		catch (NoSuchAlgorithmException e)
-		{
+		} catch (NoSuchAlgorithmException e) {
 			Assertions.fail("Algorithm not available");
 		}
 	}
 
 	@Test
-	public void testDoNotGenerateSame() throws NoSuchAlgorithmException
-	{
+	public void testDoNotGenerateSame() throws NoSuchAlgorithmException {
 		List<byte[]> generated = new ArrayList<>();
-		for (int i = 0; i < 1024; i++)
-		{
+		for (int i = 0; i < 1024; i++) {
 			byte[] toAdd = HashUtil.fillSecure(new byte[1024]);
-			if (generated.contains(toAdd))
-			{
+			if (generated.contains(toAdd)) {
 				Assertions.fail("Sama array generated");
 			}
 			generated.add(toAdd);
@@ -41,14 +33,11 @@ public class HashUtilTests
 	}
 
 	@Test
-	public void testNoSameToken() throws NoSuchAlgorithmException
-	{
+	public void testNoSameToken() throws NoSuchAlgorithmException {
 		List<byte[]> tokens = new ArrayList<>();
-		for (int i = 0; i < (1024 * 100); i++)
-		{
+		for (int i = 0; i < 1024; i++) {
 			byte[] token = HashUtil.generateToken();
-			if (tokens.contains(token))
-			{
+			if (tokens.contains(token)) {
 				Assertions.fail("Same token generated");
 			}
 			tokens.add(token);
@@ -56,14 +45,11 @@ public class HashUtilTests
 	}
 
 	@Test
-	public void testNoSameShortToken() throws NoSuchAlgorithmException
-	{
+	public void testNoSameShortToken() throws NoSuchAlgorithmException {
 		List<byte[]> tokens = new ArrayList<>();
-		for (int i = 0; i < (1024 * 100); i++)
-		{
+		for (int i = 0; i < 1024; i++) {
 			byte[] token = HashUtil.generateShortToken();
-			if (tokens.contains(token))
-			{
+			if (tokens.contains(token)) {
 				Assertions.fail("Same short token generated");
 			}
 			tokens.add(token);

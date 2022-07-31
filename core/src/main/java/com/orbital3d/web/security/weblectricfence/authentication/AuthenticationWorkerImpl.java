@@ -5,6 +5,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.security.auth.login.LoginException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class AuthenticationWorkerImpl implements AuthenticationWorker {
 	@Autowired(required = true)
 	List<Authenticator> authenticators;
 
-	public void authenticate(AuthenticationToken token) throws AuthenticationException {
+	public void authenticate(AuthenticationToken token) throws AuthenticationException, LoginException {
 		// Find first matching Authenticator or throw exception if not found
 		Authenticator authenticator = null;
 		try {
@@ -37,8 +39,9 @@ public class AuthenticationWorkerImpl implements AuthenticationWorker {
 		UserIdentity identity = authenticator.authenticate(token);
 
 		if (identity == null) {
-			throw new AuthenticationException("Invalid UserIdentity");
+			throw new LoginException("Invalid UserIdentity");
 		}
+
 		// Generate tokens
 		try {
 			String authenticationToken = Base64.getEncoder().encodeToString(HashUtil.generateShortToken());

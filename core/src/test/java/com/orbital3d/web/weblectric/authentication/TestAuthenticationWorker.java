@@ -8,6 +8,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.security.auth.login.LoginException;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +47,7 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testOk() throws AuthenticationException {
+	public void testOk() throws AuthenticationException, LoginException {
 		try (MockedStatic<WFUtil> util = Mockito.mockStatic(WFUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenReturn(mock(UserIdentity.class));
@@ -55,19 +57,31 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testThrowsExceptionAfterReturningNull() throws AuthenticationException {
+	public void testThrowsExceptionAfterReturningNull() throws AuthenticationException, LoginException {
 		try (MockedStatic<WFUtil> util = Mockito.mockStatic(WFUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenReturn(null);
 			// Run test
-			Assertions.assertThrows(AuthenticationException.class, () -> {
+			Assertions.assertThrows(LoginException.class, () -> {
 				authenticationWorker.authenticate(mock(AuthenticationToken.class));
 			});
 		}
 	}
 
 	@Test
-	public void testThrowsException() throws AuthenticationException {
+	public void testThrowsLoginException() throws AuthenticationException, LoginException {
+		try (MockedStatic<WFUtil> util = Mockito.mockStatic(WFUtil.class)) {
+			// Mock Authenticator
+			when(authenticatorMock.authenticate(any())).thenThrow(LoginException.class);
+			// Run test
+			Assertions.assertThrows(LoginException.class, () -> {
+				authenticationWorker.authenticate(mock(AuthenticationToken.class));
+			});
+		}
+	}
+
+	@Test
+	public void testThrowsException() throws AuthenticationException, LoginException {
 		try (MockedStatic<WFUtil> util = Mockito.mockStatic(WFUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenThrow(IllegalArgumentException.class);
@@ -79,7 +93,7 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testThrowsNPException() throws AuthenticationException {
+	public void testThrowsNPException() throws AuthenticationException, LoginException {
 		try (MockedStatic<WFUtil> util = Mockito.mockStatic(WFUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenThrow(NullPointerException.class);

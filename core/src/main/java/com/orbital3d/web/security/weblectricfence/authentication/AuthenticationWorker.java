@@ -1,5 +1,7 @@
 package com.orbital3d.web.security.weblectricfence.authentication;
 
+import javax.security.auth.login.LoginException;
+
 import com.orbital3d.web.security.weblectricfence.exception.AuthenticationException;
 import com.orbital3d.web.security.weblectricfence.type.UserIdentity;
 
@@ -30,8 +32,9 @@ public interface AuthenticationWorker {
 		 * @param token Authentication token to verify
 		 * @return {@link UserIdentity} instance
 		 * @throws AuthenticationException If authentication was unsuccessful
+		 * @throws LoginException          If login fails
 		 */
-		UserIdentity authenticate(AuthenticationToken token) throws AuthenticationException;
+		UserIdentity authenticate(AuthenticationToken token) throws AuthenticationException, LoginException;
 
 		/**
 		 * @param token true if this {@link Authenticator} supports given
@@ -47,7 +50,8 @@ public interface AuthenticationWorker {
 	 * 
 	 * @param token {@link AuthenticationToken} to verify
 	 * @throws AuthenticationException If credential verification failed
+	 * @throws LoginException          If login fails
 	 */
-	public void authenticate(AuthenticationToken token) throws AuthenticationException;
+	public void authenticate(AuthenticationToken token) throws AuthenticationException, LoginException;
 
 }
