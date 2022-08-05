@@ -13,11 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.orbital3d.web.security.weblectricfence.configuration.InternalConfig;
 import com.orbital3d.web.security.weblectricfence.exception.AuthenticationException;
-import com.orbital3d.web.security.weblectricfence.exclude.ExcludeAuthenticationFilter;
 import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 
 @Component
@@ -25,14 +25,16 @@ import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 public class AuthenticationFilter extends OncePerRequestFilter {
 	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 
-	@Autowired
-	private ExcludeAuthenticationFilter excludeFilter;
+	@Autowired(required = true)
+	private InternalConfig internalConfig;
+
+	private AntPathMatcher pathMatcher = new AntPathMatcher();
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		if (!excludeFilter.isExcluded(request.getRequestURI(), RequestMethod.valueOf(request.getMethod()))) {
+		if (pathMatcher.matchStart(internalConfig.secureContextRoot(), request.getRequestURI())) {
 			LOG.trace("Getting {} URI, authenticated", request.getRequestURI());
 			if (!WFUtil.isAuthenticated()) {
 				throw new AuthenticationException("Not authenticated, path " + request.getRequestURI());

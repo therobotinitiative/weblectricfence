@@ -24,8 +24,6 @@ import org.springframework.web.context.request.RequestContextListener;
 import com.orbital3d.web.security.weblectricfence.annotation.RequiresPermission;
 import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationMatcher;
 import com.orbital3d.web.security.weblectricfence.authorization.DefaultAuthorizationMatcher;
-import com.orbital3d.web.security.weblectricfence.exclude.DefaultExcludeAuthenticationFilter;
-import com.orbital3d.web.security.weblectricfence.exclude.ExcludeAuthenticationFilter;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 
@@ -40,23 +38,6 @@ import com.orbital3d.web.security.weblectricfence.util.WFUtil;
 @ComponentScan(includeFilters = @ComponentScan.Filter(type = FilterType.ANNOTATION, classes = Controller.class))
 public class AutoConfiguration {
 	private static final Logger LOG = LoggerFactory.getLogger(AutoConfiguration.class);
-
-	/**
-	 * Default excluded paths.
-	 * 
-	 * @return Default {@link ExcludeAuthenticationFilter}
-	 */
-	@Bean
-	@ConditionalOnMissingBean(name = "excludeFilter")
-	public ExcludeAuthenticationFilter excludeFilter() {
-		ExcludeAuthenticationFilter excludeAuthentication = new DefaultExcludeAuthenticationFilter();
-
-		excludeAuthentication.addExcluded("/login**", null);
-		excludeAuthentication.addExcluded("/logout", null);
-		excludeAuthentication.addExcluded("/", null);
-
-		return excludeAuthentication;
-	}
 
 	// Only if AliasFor annotation worked we would not need this method.
 	private Pair<String[], RequestMethod> findPaths(Method m) {

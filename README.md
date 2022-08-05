@@ -12,12 +12,13 @@ which contains the paths not requiring authentication, /login for example.
 
 # Setup
 
+# WEConfig
+
+The implementing bean will give applicationspecific configuration
+
 # AuthorizationMatcher
 
-# ExcludeAuthenticationFilter
-
-Implementation bean of this interface is required. DefaultExcludeAuthenticationFilter class is provided. The Spring Boot starter uses this
-implementation if "excludeFilter" is missing.
+Responsible for associating URI to permission.
 
 # AuthenticationWorker and Authenticator
 
@@ -27,4 +28,4 @@ bean which MUST be provided by the application.
 ## AuthorizationMatcher
 The authorization filter uses this interface to determine if the requested path needs a specific permission. Implementing bean determines how the path is matched.
 DefaultAuthorizationMatcher is provided which uses ANT styled path matching. Application can provide application specific implementation or use the default
-implementation. This bean is required.
+implementation. This bean is required. Authorization is performed only if the path is under the specified secure context root.

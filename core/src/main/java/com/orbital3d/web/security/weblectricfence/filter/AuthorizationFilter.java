@@ -13,11 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationMatcher;
 import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationWorker;
+import com.orbital3d.web.security.weblectricfence.configuration.InternalConfig;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 
 @Component
@@ -31,12 +33,17 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 	@Autowired(required = true)
 	private AuthorizationWorker authorizationWorker;
 
+	@Autowired(required = true)
+	private InternalConfig internalConfig;
+
+	private AntPathMatcher pathMatcher = new AntPathMatcher();
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		Permission permission = authorizationMatcher.requiredPermission(request.getRequestURI(),
 				RequestMethod.valueOf(request.getMethod()));
-		if (permission != null) {
+		if (permission != null && pathMatcher.matchStart(internalConfig.secureContextRoot(), request.getRequestURI())) {
 			LOG.trace("Authoring URI {} requiring permission {}", request.getRequestURI(), permission);
 			authorizationWorker.authorize(permission);
 		}
