@@ -34,7 +34,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		if (pathMatcher.matchStart(internalConfig.secureContextRoot(), request.getRequestURI())) {
+		if (pathMatcher.match(internalConfig.secureContextRoot(), request.getRequestURI())) {
 			LOG.trace("Getting {} URI, authenticated", request.getRequestURI());
 			if (!WFUtil.isAuthenticated()) {
 				throw new AuthenticationException("Not authenticated, path " + request.getRequestURI());

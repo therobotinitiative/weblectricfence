@@ -97,7 +97,8 @@ public class TestAuthenticationFilter {
 				Pair.of("POST", "/public/this/should/not/require/auth"),
 				Pair.of("GET", "/public?param=this_should_require_auth"), Pair.of("GET", "/public"),
 				Pair.of("GET", "/applicationpath/"), Pair.of("GET", "/public/"), Pair.of("GET", "/favicon.ico"),
-				Pair.of("DELETE", "/path?param=this_should_require_auth"));
+				Pair.of("DELETE", "/path?param=this_should_require_auth"), Pair.of("GET", "/"),
+				Pair.of("GET", "/login"), Pair.of("GET", "/index"));
 		Iterator<Pair<String, String>> iter = tests.iterator();
 		while (iter.hasNext()) {
 			Pair<String, String> p = iter.next();
@@ -161,19 +162,6 @@ public class TestAuthenticationFilter {
 			});
 		}
 		verify(filterChain, times(0)).doFilter(eq(request), eq(response));
-	}
-
-	@Test
-	public void testPathMatching() throws NoSuchMethodException, SecurityException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
-//		String[] paths = new String[] { "/path", "/path/", "/path/{withparameters}", "/path**", "/path/**" };
-//		Optional<Method> m = ReflectionUtils.findMethod(AuthenticationFilter.class, "verifyContextRoot", null)
-//				//findMethod(authenticationFilter.getClass(), "verifyContextRoot", null);
-//		m.get().setAccessible(true);
-//		for (String path : paths) {
-//			when(weConfig.secureContextRoot()).thenReturn(path);
-//			m.invoke(authenticationFilter, null);
-//		}
 	}
 
 }
