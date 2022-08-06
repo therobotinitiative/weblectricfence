@@ -18,7 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.orbital3d.web.security.weblectricfence.configuration.InternalConfig;
 import com.orbital3d.web.security.weblectricfence.exception.AuthenticationException;
-import com.orbital3d.web.security.weblectricfence.util.WFUtil;
+import com.orbital3d.web.security.weblectricfence.util.FenceUtil;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -36,7 +36,7 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
 		if (pathMatcher.match(internalConfig.secureContextRoot(), request.getRequestURI())) {
 			LOG.trace("Getting {} URI, authenticated", request.getRequestURI());
-			if (!WFUtil.isAuthenticated()) {
+			if (!FenceUtil.isAuthenticated()) {
 				throw new AuthenticationException("Not authenticated, path " + request.getRequestURI());
 			}
 		} else {

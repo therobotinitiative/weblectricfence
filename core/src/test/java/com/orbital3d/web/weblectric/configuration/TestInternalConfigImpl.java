@@ -11,12 +11,12 @@ import java.lang.reflect.Method;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.orbital3d.web.security.weblectricfence.configuration.WEConfig;
+import com.orbital3d.web.security.weblectricfence.configuration.FenceConfig;
 import com.orbital3d.web.security.weblectricfence.configuration.impl.InternalConfigImpl;
 
 public class TestInternalConfigImpl {
 	private InternalConfigImpl i;
-	private WEConfig c = mock(WEConfig.class);
+	private FenceConfig c = mock(FenceConfig.class);
 
 	@BeforeEach
 	protected void init()

@@ -25,7 +25,7 @@ import com.orbital3d.web.security.weblectricfence.annotation.RequiresPermission;
 import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationMatcher;
 import com.orbital3d.web.security.weblectricfence.authorization.DefaultAuthorizationMatcher;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
-import com.orbital3d.web.security.weblectricfence.util.WFUtil;
+import com.orbital3d.web.security.weblectricfence.util.FenceUtil;
 
 /**
  * Auto configuration for WebLectric Fence.
@@ -77,7 +77,7 @@ public class AutoConfiguration {
 	@ConditionalOnMissingBean
 	public AuthorizationMatcher authorizationMatcher(ApplicationContext applicationContext) {
 		AuthorizationMatcher authorizationMatcher = new DefaultAuthorizationMatcher();
-		WFUtil.setApplicationContext(applicationContext);
+		FenceUtil.setApplicationContext(applicationContext);
 
 		LOG.trace("Scanning end point for required permission");
 		if (applicationContext != null) {

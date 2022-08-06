@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import com.orbital3d.web.security.weblectricfence.exception.AuthorizationException;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
-import com.orbital3d.web.security.weblectricfence.util.WFUtil;
+import com.orbital3d.web.security.weblectricfence.util.FenceUtil;
 
 @Component
 public class AuthorizationWorkerImpl implements AuthorizationWorker {
@@ -19,7 +19,7 @@ public class AuthorizationWorkerImpl implements AuthorizationWorker {
 
 	@Override
 	public void authorize(Permission permission) throws AuthorizationException {
-		WebLectricSubject subject = WFUtil.getSubject();
+		WebLectricSubject subject = FenceUtil.getSubject();
 		if (subject.getPermissions() == null) {
 			LOG.info("Gathering permissions for {}", subject.getIdentity());
 			authorizer.gatherPermissions(subject);

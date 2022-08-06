@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 
 import com.orbital3d.web.security.weblectricfence.configuration.InternalConfig;
-import com.orbital3d.web.security.weblectricfence.configuration.WEConfig;
+import com.orbital3d.web.security.weblectricfence.configuration.FenceConfig;
 
 @Component
 public class InternalConfigImpl implements InternalConfig {
 	@Autowired
-	private WEConfig weConfig;
+	private FenceConfig weConfig;
 
 	private String secureContextRoot = null;
 

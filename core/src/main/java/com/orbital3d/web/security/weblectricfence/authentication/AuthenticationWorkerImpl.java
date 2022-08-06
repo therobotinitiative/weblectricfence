@@ -17,7 +17,7 @@ import com.orbital3d.web.security.weblectricfence.exception.UnsupportedAuthentic
 import com.orbital3d.web.security.weblectricfence.type.Subject;
 import com.orbital3d.web.security.weblectricfence.type.UserIdentity;
 import com.orbital3d.web.security.weblectricfence.util.HashUtil;
-import com.orbital3d.web.security.weblectricfence.util.WFUtil;
+import com.orbital3d.web.security.weblectricfence.util.FenceUtil;
 
 @Component
 public class AuthenticationWorkerImpl implements AuthenticationWorker {
@@ -46,7 +46,7 @@ public class AuthenticationWorkerImpl implements AuthenticationWorker {
 		try {
 			String authenticationToken = Base64.getEncoder().encodeToString(HashUtil.generateShortToken());
 			String refreshToken = Base64.getEncoder().encodeToString(HashUtil.generateToken());
-			WFUtil.setSubject(Subject.of(identity, null, authenticationToken, refreshToken));
+			FenceUtil.setSubject(Subject.of(identity, null, authenticationToken, refreshToken));
 		} catch (NoSuchAlgorithmException e) {
 			LOG.error("Missing suitable algorithm", e);
 		}

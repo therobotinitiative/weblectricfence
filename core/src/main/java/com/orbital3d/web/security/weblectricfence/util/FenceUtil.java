@@ -16,18 +16,18 @@ import com.orbital3d.web.security.weblectricfence.authorization.AuthorizationWor
 import com.orbital3d.web.security.weblectricfence.exception.AuthenticationException;
 import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
 
-public class WFUtil {
+public class FenceUtil {
 	private static ApplicationContext applicationContext;
 
 	public static void setApplicationContext(ApplicationContext applicationContext) {
-		WFUtil.applicationContext = applicationContext;
+		FenceUtil.applicationContext = applicationContext;
 	}
 
 	private static final String SUBJECT_KEY = "subject-key";
 	private static final String AUTHENTICATION_TOKEN_KEY = "authentication-token-key";
 	private static final String REFRESH_TOKEN_KEY = "refresh-token-key";
 
-	private WFUtil() {
+	private FenceUtil() {
 		// Nothing
 	}
 
@@ -44,13 +44,13 @@ public class WFUtil {
 		if (StringUtils.isAllBlank(subject.getAuthenticationToken())) {
 			throw new IllegalArgumentException("Authentication token must be set");
 		}
-		WFUtil.getSession().setAttribute(AUTHENTICATION_TOKEN_KEY, subject.getAuthenticationToken());
-		WFUtil.getSession().setAttribute(REFRESH_TOKEN_KEY, subject.getRefreshToken());
-		WFUtil.getSession().setAttribute(SUBJECT_KEY, subject);
+		FenceUtil.getSession().setAttribute(AUTHENTICATION_TOKEN_KEY, subject.getAuthenticationToken());
+		FenceUtil.getSession().setAttribute(REFRESH_TOKEN_KEY, subject.getRefreshToken());
+		FenceUtil.getSession().setAttribute(SUBJECT_KEY, subject);
 	}
 
 	public static WebLectricSubject getSubject() {
-		return (WebLectricSubject) WFUtil.getSession().getAttribute(SUBJECT_KEY);
+		return (WebLectricSubject) FenceUtil.getSession().getAttribute(SUBJECT_KEY);
 	}
 
 	public static void login(AuthenticationToken token) throws AuthenticationException, LoginException {
@@ -61,7 +61,7 @@ public class WFUtil {
 
 	public static void logout() {
 		try {
-			WebLectricSubject subject = (WebLectricSubject) WFUtil.getSession().getAttribute(SUBJECT_KEY);
+			WebLectricSubject subject = (WebLectricSubject) FenceUtil.getSession().getAttribute(SUBJECT_KEY);
 			AuthorizationWorker authWorker = applicationContext.getAutowireCapableBeanFactory()
 					.getBean(AuthorizationWorkerImpl.class);
 			if (subject != null) {
@@ -75,11 +75,11 @@ public class WFUtil {
 	}
 
 	public static boolean isAuthenticated() {
-		WebLectricSubject subject = (WebLectricSubject) WFUtil.getSession().getAttribute(SUBJECT_KEY);
+		WebLectricSubject subject = (WebLectricSubject) FenceUtil.getSession().getAttribute(SUBJECT_KEY);
 		if (subject != null) {
 			String authenticationToken = subject.getAuthenticationToken();
 			if (authenticationToken != null) {
-				String sessionAuthenticationToken = (String) WFUtil.getSession().getAttribute(AUTHENTICATION_TOKEN_KEY);
+				String sessionAuthenticationToken = (String) FenceUtil.getSession().getAttribute(AUTHENTICATION_TOKEN_KEY);
 				if (sessionAuthenticationToken != null) {
 					return sessionAuthenticationToken.equals(authenticationToken);
 				}
