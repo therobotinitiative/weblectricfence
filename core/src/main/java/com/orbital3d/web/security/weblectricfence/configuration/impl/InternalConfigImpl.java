@@ -22,6 +22,8 @@ public class InternalConfigImpl implements InternalConfig {
 
 	private AntPathMatcher pathMatcher = new AntPathMatcher();
 
+	private static final String pathEnd = "**/**";
+
 	@PostConstruct
 	protected void prepareConfiguration() {
 		// Modify context root path to ANT style path
@@ -29,14 +31,15 @@ public class InternalConfigImpl implements InternalConfig {
 		if (StringUtils.isBlank(configuredContextRoot)) {
 			throw new IllegalArgumentException("Secure mst not be blank");
 		}
-		if (!configuredContextRoot.startsWith("/")) {
-			configuredContextRoot = "/" + configuredContextRoot;
+		if (!configuredContextRoot.startsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR)) {
+			configuredContextRoot = AntPathMatcher.DEFAULT_PATH_SEPARATOR + configuredContextRoot;
 		}
-		if (!configuredContextRoot.endsWith("/") && !configuredContextRoot.endsWith("**/**")) {
-			configuredContextRoot += "/";
+		if (!configuredContextRoot.endsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR)
+				&& !configuredContextRoot.endsWith(InternalConfigImpl.pathEnd)) {
+			configuredContextRoot += AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 		}
-		if (!configuredContextRoot.endsWith("**/**")) {
-			configuredContextRoot += "**/**";
+		if (!configuredContextRoot.endsWith(InternalConfigImpl.pathEnd)) {
+			configuredContextRoot += InternalConfigImpl.pathEnd;
 		}
 		if (!Pattern.matches("\\/[a-z0-9/]+\\/\\*\\*\\/\\*\\*", configuredContextRoot)) {
 			throw new BeanInitializationException("wrong format");
