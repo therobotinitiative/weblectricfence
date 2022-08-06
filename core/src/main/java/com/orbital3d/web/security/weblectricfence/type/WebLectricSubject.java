@@ -1,5 +1,6 @@
 package com.orbital3d.web.security.weblectricfence.type;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import java.util.Set;
  * @author msiren
  *
  */
-public interface WebLectricSubject {
+public interface WebLectricSubject extends Serializable {
 	/**
 	 * @return Application specific identity of the subject
 	 */
