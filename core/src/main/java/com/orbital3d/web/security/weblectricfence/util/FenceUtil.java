@@ -33,8 +33,7 @@ public class FenceUtil {
 
 	public static HttpSession getSession() {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		HttpSession session = attr.getRequest().getSession();
-		return session;
+		return attr.getRequest().getSession();
 	}
 
 	public static void setSubject(WebLectricSubject subject) {
@@ -79,7 +78,8 @@ public class FenceUtil {
 		if (subject != null) {
 			String authenticationToken = subject.getAuthenticationToken();
 			if (authenticationToken != null) {
-				String sessionAuthenticationToken = (String) FenceUtil.getSession().getAttribute(AUTHENTICATION_TOKEN_KEY);
+				String sessionAuthenticationToken = (String) FenceUtil.getSession()
+						.getAttribute(AUTHENTICATION_TOKEN_KEY);
 				if (sessionAuthenticationToken != null) {
 					return sessionAuthenticationToken.equals(authenticationToken);
 				}
