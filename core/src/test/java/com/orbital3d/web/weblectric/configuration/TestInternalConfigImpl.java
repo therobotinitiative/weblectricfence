@@ -15,13 +15,12 @@ import org.springframework.beans.factory.BeanInitializationException;
 import com.orbital3d.web.security.weblectricfence.configuration.FenceConfig;
 import com.orbital3d.web.security.weblectricfence.configuration.impl.InternalConfigImpl;
 
-public class TestInternalConfigImpl {
+class TestInternalConfigImpl {
 	private InternalConfigImpl i;
 	private FenceConfig c = mock(FenceConfig.class);
 
 	@BeforeEach
-	protected void init()
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	void init() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		i = new InternalConfigImpl();
 		Field f = InternalConfigImpl.class.getDeclaredField("weConfig");
 		f.setAccessible(true);
@@ -29,7 +28,7 @@ public class TestInternalConfigImpl {
 	}
 
 	@Test
-	protected void testValidPaths() throws NoSuchMethodException, SecurityException, IllegalAccessException,
+	void testValidPaths() throws NoSuchMethodException, SecurityException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
 		String[] paths = new String[] { "/path", "/path/", "/ant/**/**", "/multiple/parts/to/secure",
 				"/multiple/parts/to/secure/", "/multiple/parts/to/secure/**/**", "path/", "path",
@@ -44,7 +43,7 @@ public class TestInternalConfigImpl {
 	}
 
 	@Test
-	protected void testInvqlidParams() {
+	void testInvqlidParams() {
 		String[] paths = new String[] { "{}", "@&%", "/{}", "/@&%", "/{}/", "/@&%/" };
 		for (String path : paths) {
 			when(c.secureContextRoot()).thenReturn(path);
@@ -61,7 +60,7 @@ public class TestInternalConfigImpl {
 	}
 
 	@Test
-	protected void testBlankParams() {
+	void testBlankParams() {
 		String[] paths = new String[] { "", " ", null };
 		for (String path : paths) {
 			when(c.secureContextRoot()).thenReturn(path);

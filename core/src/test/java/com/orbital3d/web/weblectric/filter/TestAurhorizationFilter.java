@@ -1,7 +1,6 @@
 package com.orbital3d.web.weblectric.filter;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -31,15 +30,14 @@ import com.orbital3d.web.security.weblectricfence.configuration.InternalConfig;
 import com.orbital3d.web.security.weblectricfence.filter.AuthorizationFilter;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 
-public class TestAurhorizationFilter {
+class TestAurhorizationFilter {
 	private AuthorizationFilter authorizationFilter;
 	private AuthorizationMatcher authorizationMatcher;
 	private InternalConfig internalConfig;
 	private AuthorizationWorker authorizationWorker;
 
 	@BeforeEach
-	protected void prepare()
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	void prepare() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		authorizationFilter = new AuthorizationFilter();
 		authorizationMatcher = new DefaultAuthorizationMatcher();
 		internalConfig = mock(InternalConfig.class);
@@ -50,7 +48,7 @@ public class TestAurhorizationFilter {
 	}
 
 	@Test
-	protected void testNormalPermissionCheck() throws IOException, ServletException {
+	void testNormalPermissionCheck() throws IOException, ServletException {
 		// mock behaviour
 		Permission p = Permission.of("perm");
 		authorizationMatcher.append(EndPointContainer.of("/path/perm", RequestMethod.GET, p));
@@ -61,12 +59,12 @@ public class TestAurhorizationFilter {
 		// run test
 		authorizationFilter.doFilter(request, response, fc);
 		// verify
-		verify(authorizationWorker).authorize(eq(p));
-		verify(fc).doFilter(eq(request), eq(response));
+		verify(authorizationWorker).authorize(p);
+		verify(fc).doFilter(request, response);
 	}
 
 	@Test
-	protected void testNoPermissionCheck1() throws IOException, ServletException {
+	void testNoPermissionCheck1() throws IOException, ServletException {
 		// mock behaviour
 		Permission p = Permission.of("perm");
 		authorizationMatcher.append(EndPointContainer.of("/path/perm", RequestMethod.GET, p));
@@ -78,13 +76,12 @@ public class TestAurhorizationFilter {
 		authorizationFilter.doFilter(request, response, fc);
 		// verify
 		verify(authorizationWorker, times(0)).authorize(any());
-		verify(fc).doFilter(eq(request), eq(response));
+		verify(fc).doFilter(request, response);
 	}
 
 	@Test
-	protected void testNoPermissionCheck2() throws IOException, ServletException {
+	void testNoPermissionCheck2() throws IOException, ServletException {
 		// mock behaviour
-		Permission p = Permission.of("perm");
 		when(internalConfig.secureContextRoot()).thenReturn("/secure/**/**");
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/perm");
 		HttpServletResponse response = new MockHttpServletResponse();
@@ -93,11 +90,11 @@ public class TestAurhorizationFilter {
 		authorizationFilter.doFilter(request, response, fc);
 		// verify
 		verify(authorizationWorker, times(0)).authorize(any());
-		verify(fc).doFilter(eq(request), eq(response));
+		verify(fc).doFilter(request, response);
 	}
 
 	@Test
-	protected void testDifferentRequestMethod() throws IOException, ServletException {
+	void testDifferentRequestMethod() throws IOException, ServletException {
 		// mock behaviour
 		Permission p = Permission.of("perm");
 		authorizationMatcher.append(EndPointContainer.of("/path/perm", RequestMethod.POST, p));
@@ -109,11 +106,11 @@ public class TestAurhorizationFilter {
 		authorizationFilter.doFilter(request, response, fc);
 		// verify
 		verify(authorizationWorker, times(0)).authorize(any());
-		verify(fc).doFilter(eq(request), eq(response));
+		verify(fc).doFilter(request, response);
 	}
 
 	@Test
-	protected void testException1() throws IOException, ServletException {
+	void testException1() throws IOException, ServletException {
 		// mock behaviour
 		Permission p = Permission.of("perm");
 		authorizationMatcher.append(EndPointContainer.of("/path/perm", RequestMethod.GET, p));
@@ -127,12 +124,12 @@ public class TestAurhorizationFilter {
 		});
 
 		// verify
-		verify(authorizationWorker, times(0)).authorize(eq(p));
-		verify(fc, times(0)).doFilter(eq(request), eq(response));
+		verify(authorizationWorker, times(0)).authorize(p);
+		verify(fc, times(0)).doFilter(request, response);
 	}
 
 	@Test
-	protected void testException2() throws IOException, ServletException {
+	void testException2() throws IOException, ServletException {
 		// mock behaviour
 		Permission p = Permission.of("perm");
 		authorizationMatcher.append(EndPointContainer.of("/path/perm", RequestMethod.GET, p));
@@ -140,15 +137,15 @@ public class TestAurhorizationFilter {
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/perm");
 		HttpServletResponse response = new MockHttpServletResponse();
 		FilterChain fc = mock(FilterChain.class);
-		doThrow(IllegalArgumentException.class).when(authorizationWorker).authorize(eq(p));
+		doThrow(IllegalArgumentException.class).when(authorizationWorker).authorize(p);
 		// run test
 		Assertions.assertThrows(IllegalArgumentException.class, () -> {
 			authorizationFilter.doFilter(request, response, fc);
 		});
 
 		// verify
-		verify(authorizationWorker, times(1)).authorize(eq(p));
-		verify(fc, times(0)).doFilter(eq(request), eq(response));
+		verify(authorizationWorker, times(1)).authorize(p);
+		verify(fc, times(0)).doFilter(request, response);
 	}
 
 	private void wb(Class<?> clazz, Object o, Object value, String fn)

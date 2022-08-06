@@ -16,9 +16,9 @@ import com.orbital3d.web.security.weblectricfence.type.Subject;
 import com.orbital3d.web.security.weblectricfence.type.UserIdentity;
 import com.orbital3d.web.security.weblectricfence.type.WebLectricSubject;
 
-public class TestSubject {
+class TestSubject {
 	@Test
-	public void testSFMOk() {
+	void testSFMOk() {
 		Subject.of(mock(UserIdentity.class));
 		Subject.of(null);
 		Subject.of(mock(UserIdentity.class), Collections.emptySet());
@@ -28,7 +28,7 @@ public class TestSubject {
 	}
 
 	@Test
-	public void testCannotModifyPermissionsAfterSet() {
+	void testCannotModifyPermissionsAfterSet() {
 		Subject s = Subject.of(mock(UserIdentity.class));
 		Set<Permission> perms = new HashSet<>();
 		perms.add(Permission.of("p1"));
@@ -42,7 +42,7 @@ public class TestSubject {
 	}
 
 	@Test
-	public void testCannotModifyPermissionsWithGet() {
+	void testCannotModifyPermissionsWithGet() {
 		Subject s = Subject.of(mock(UserIdentity.class));
 		Set<Permission> perms = new HashSet<>();
 		perms.add(Permission.of("p1"));
@@ -60,7 +60,7 @@ public class TestSubject {
 	}
 
 	@Test
-	public void testAssignelability() {
+	void testAssignelability() {
 		Assertions.assertTrue(WebLectricSubject.class.isAssignableFrom(Subject.class));
 	}
 }

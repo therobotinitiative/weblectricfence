@@ -13,7 +13,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public final class Subject implements WebLectricSubject {
 	private UserIdentity identity;
-	private Iterable<Permission> permissions;
+	private transient Iterable<Permission> permissions;
 	private String authenticationToken;
 	private String refreshToken;
 

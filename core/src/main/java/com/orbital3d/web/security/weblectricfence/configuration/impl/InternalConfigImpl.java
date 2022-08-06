@@ -22,7 +22,7 @@ public class InternalConfigImpl implements InternalConfig {
 
 	private AntPathMatcher pathMatcher = new AntPathMatcher();
 
-	private static final String pathEnd = "**/**";
+	private static final String PATH_END = "**/**";
 
 	@PostConstruct
 	protected void prepareConfiguration() {
@@ -35,11 +35,11 @@ public class InternalConfigImpl implements InternalConfig {
 			configuredContextRoot = AntPathMatcher.DEFAULT_PATH_SEPARATOR + configuredContextRoot;
 		}
 		if (!configuredContextRoot.endsWith(AntPathMatcher.DEFAULT_PATH_SEPARATOR)
-				&& !configuredContextRoot.endsWith(InternalConfigImpl.pathEnd)) {
+				&& !configuredContextRoot.endsWith(InternalConfigImpl.PATH_END)) {
 			configuredContextRoot += AntPathMatcher.DEFAULT_PATH_SEPARATOR;
 		}
-		if (!configuredContextRoot.endsWith(InternalConfigImpl.pathEnd)) {
-			configuredContextRoot += InternalConfigImpl.pathEnd;
+		if (!configuredContextRoot.endsWith(InternalConfigImpl.PATH_END)) {
+			configuredContextRoot += InternalConfigImpl.PATH_END;
 		}
 		if (!Pattern.matches("\\/[a-z0-9/]+\\/\\*\\*\\/\\*\\*", configuredContextRoot)) {
 			throw new BeanInitializationException("wrong format");

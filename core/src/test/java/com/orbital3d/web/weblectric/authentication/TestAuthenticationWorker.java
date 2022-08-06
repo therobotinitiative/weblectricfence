@@ -29,14 +29,13 @@ import com.orbital3d.web.security.weblectricfence.type.UserIdentity;
 import com.orbital3d.web.security.weblectricfence.util.FenceUtil;
 
 @ExtendWith(MockitoExtension.class)
-public class TestAuthenticationWorker {
+class TestAuthenticationWorker {
 	private AuthenticationWorker authenticationWorker;
 	@Mock
 	private Authenticator authenticatorMock;
 
 	@BeforeEach
-	public void init()
-			throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
+	void init() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException {
 		authenticationWorker = new AuthenticationWorkerImpl();
 		List<Authenticator> authenticators = new ArrayList<>();
 		when(authenticatorMock.supports(any())).thenReturn(true);
@@ -47,7 +46,7 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testOk() throws AuthenticationException, LoginException {
+	void testOk() throws AuthenticationException, LoginException {
 		try (MockedStatic<FenceUtil> util = Mockito.mockStatic(FenceUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenReturn(mock(UserIdentity.class));
@@ -57,7 +56,7 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testThrowsExceptionAfterReturningNull() throws AuthenticationException, LoginException {
+	void testThrowsExceptionAfterReturningNull() throws AuthenticationException, LoginException {
 		try (MockedStatic<FenceUtil> util = Mockito.mockStatic(FenceUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenReturn(null);
@@ -69,7 +68,7 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testThrowsLoginException() throws AuthenticationException, LoginException {
+	void testThrowsLoginException() throws AuthenticationException, LoginException {
 		try (MockedStatic<FenceUtil> util = Mockito.mockStatic(FenceUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenThrow(LoginException.class);
@@ -81,7 +80,7 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testThrowsException() throws AuthenticationException, LoginException {
+	void testThrowsException() throws AuthenticationException, LoginException {
 		try (MockedStatic<FenceUtil> util = Mockito.mockStatic(FenceUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenThrow(IllegalArgumentException.class);
@@ -93,7 +92,7 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testThrowsNPException() throws AuthenticationException, LoginException {
+	void testThrowsNPException() throws AuthenticationException, LoginException {
 		try (MockedStatic<FenceUtil> util = Mockito.mockStatic(FenceUtil.class)) {
 			// Mock Authenticator
 			when(authenticatorMock.authenticate(any())).thenThrow(NullPointerException.class);
@@ -105,7 +104,7 @@ public class TestAuthenticationWorker {
 	}
 
 	@Test
-	public void testNoSupportedAuthenticatorFound() {
+	void testNoSupportedAuthenticatorFound() {
 		when(authenticatorMock.supports(any())).thenReturn(false);
 		Assertions.assertThrows(UnsupportedAuthenticationTokenException.class, () -> {
 			authenticationWorker.authenticate(mock(AuthenticationToken.class));

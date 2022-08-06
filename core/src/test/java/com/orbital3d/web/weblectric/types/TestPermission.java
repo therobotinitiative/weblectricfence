@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 
-public class TestPermission {
+class TestPermission {
 	/**
 	 * Convenience class.
 	 * 
@@ -45,17 +45,17 @@ public class TestPermission {
 			it.of("part1:part2:part3:part4:part5", "part1:part2:*", true) };
 
 	@Test
-	public void testPermissionArray() {
+	void testPermissionArray() {
 		for (it t1 : t) {
 			Assertions.assertEquals(t1.p1.isPermitted(t1.p2), t1.expected, "asserting " + t1.p1 + " with " + t1.p2);
 		}
 	}
 
 	@Test
-	public void testEquals() {
-		Assertions.assertTrue(Permission.of("perm").equals(Permission.of("perm")));
-		Assertions.assertFalse(Permission.of("perm").equals(Permission.of("diff-perm")));
-		Assertions.assertTrue(Permission.of("perm:ission").equals(Permission.of("perm:ission")));
-		Assertions.assertFalse(Permission.of("perm:oteherpart").equals(Permission.of("perm:*")));
+	void testEquals() {
+		Assertions.assertEquals(Permission.of("perm"), Permission.of("perm"));
+		Assertions.assertNotEquals(Permission.of("perm"), Permission.of("diff-perm"));
+		Assertions.assertEquals(Permission.of("perm:ission"), Permission.of("perm:ission"));
+		Assertions.assertNotEquals(Permission.of("perm:oteherpart"), Permission.of("perm:*"));
 	}
 }

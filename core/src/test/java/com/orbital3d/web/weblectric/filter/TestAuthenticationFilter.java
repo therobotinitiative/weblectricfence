@@ -1,6 +1,5 @@
 package com.orbital3d.web.weblectric.filter;
 
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.times;
@@ -32,11 +31,11 @@ import com.orbital3d.web.security.weblectricfence.exception.AuthenticationExcept
 import com.orbital3d.web.security.weblectricfence.filter.AuthenticationFilter;
 import com.orbital3d.web.security.weblectricfence.util.FenceUtil;
 
-public class TestAuthenticationFilter {
+class TestAuthenticationFilter {
 	private AuthenticationFilter authenticationFilter;
 
 	@BeforeEach
-	public void init() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException,
+	void init() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException,
 			NoSuchMethodException, InvocationTargetException {
 		InternalConfig ic = mock(InternalConfig.class);
 
@@ -49,7 +48,7 @@ public class TestAuthenticationFilter {
 	}
 
 	@Test
-	public void testNormalAuthenticatedArray() throws ServletException, IOException {
+	void testNormalAuthenticatedArray() throws ServletException, IOException {
 		List<Pair<String, String>> tests = Arrays.asList(Pair.of("GET", "/path/this/should/require/auth"),
 				Pair.of("POST", "/path/this/should/require/auth"),
 				Pair.of("GET", "/path?param=this_should_require_auth"), Pair.of("GET", "/path"),
@@ -64,12 +63,12 @@ public class TestAuthenticationFilter {
 				wfUtilMock.when(FenceUtil::isAuthenticated).thenReturn(true);
 				authenticationFilter.doFilter(request, response, filterChain);
 			}
-			verify(filterChain).doFilter(eq(request), eq(response));
+			verify(filterChain).doFilter(request, response);
 		}
 	}
 
 	@Test
-	public void testNormalNotAuthenticated() throws ServletException, IOException {
+	void testNormalNotAuthenticated() throws ServletException, IOException {
 		List<Pair<String, String>> tests = Arrays.asList(Pair.of("GET", "/path/this/should/require/auth"),
 				Pair.of("POST", "/path/this/should/require/auth"), Pair.of("GET", "/path"), Pair.of("GET", "/path/"),
 				Pair.of("DELETE", "/path/random/param"));
@@ -86,13 +85,13 @@ public class TestAuthenticationFilter {
 					authenticationFilter.doFilter(request, response, filterChain);
 				});
 			}
-			verify(filterChain, times(0)).doFilter(eq(request), eq(response));
+			verify(filterChain, times(0)).doFilter(request, response);
 		}
 	}
 
 	@Test
 
-	public void testNoAuthenticationCheck() throws ServletException, IOException {
+	void testNoAuthenticationCheck() throws ServletException, IOException {
 		List<Pair<String, String>> tests = Arrays.asList(Pair.of("GET", "/public/this/should/not/require/auth"),
 				Pair.of("POST", "/public/this/should/not/require/auth"),
 				Pair.of("GET", "/public?param=this_should_require_auth"), Pair.of("GET", "/public"),
@@ -110,12 +109,12 @@ public class TestAuthenticationFilter {
 				authenticationFilter.doFilter(request, response, filterChain);
 				wfUtilMock.verify(FenceUtil::isAuthenticated, times(0));
 			}
-			verify(filterChain).doFilter(eq(request), eq(response));
+			verify(filterChain).doFilter(request, response);
 		}
 	}
 
 	@Test
-	public void testException1() throws ServletException, IOException {
+	void testException1() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path");
 		HttpServletResponse response = new MockHttpServletResponse();
@@ -125,11 +124,11 @@ public class TestAuthenticationFilter {
 				authenticationFilter.doFilter(request, response, filterChain);
 			});
 		}
-		verify(filterChain, times(0)).doFilter(eq(request), eq(response));
+		verify(filterChain, times(0)).doFilter(request, response);
 	}
 
 	@Test
-	public void testException2() throws ServletException, IOException {
+	void testException2() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		HttpServletRequest request = new MockHttpServletRequest("GET", "/path/") {
 			public String getRequestURI() {
@@ -143,11 +142,11 @@ public class TestAuthenticationFilter {
 				authenticationFilter.doFilter(request, response, filterChain);
 			});
 		}
-		verify(filterChain, times(0)).doFilter(eq(request), eq(response));
+		verify(filterChain, times(0)).doFilter(request, response);
 	}
 
 	@Test
-	public void testException3() throws ServletException, IOException {
+	void testException3() throws ServletException, IOException {
 		FilterChain filterChain = mock(FilterChain.class);
 		HttpServletRequest request = new MockHttpServletRequest("hilipatsuippa", "/path/") {
 			public String getRequestURI() {
@@ -161,7 +160,7 @@ public class TestAuthenticationFilter {
 				authenticationFilter.doFilter(request, response, filterChain);
 			});
 		}
-		verify(filterChain, times(0)).doFilter(eq(request), eq(response));
+		verify(filterChain, times(0)).doFilter(request, response);
 	}
 
 }

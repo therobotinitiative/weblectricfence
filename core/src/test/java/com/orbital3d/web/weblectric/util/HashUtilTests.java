@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 
 import com.orbital3d.web.security.weblectricfence.util.HashUtil;
 
-public class HashUtilTests {
+class HashUtilTests {
 
 	@Test
-	public void testAlgorithmAvailable() {
+	void testAlgorithmAvailable() {
 		try {
 			HashUtil.fillSecure(new byte[1024]);
 		} catch (NoSuchAlgorithmException e) {
@@ -21,7 +21,7 @@ public class HashUtilTests {
 	}
 
 	@Test
-	public void testDoNotGenerateSame() throws NoSuchAlgorithmException {
+	void testDoNotGenerateSame() throws NoSuchAlgorithmException {
 		List<byte[]> generated = new ArrayList<>();
 		for (int i = 0; i < 1024; i++) {
 			byte[] toAdd = HashUtil.fillSecure(new byte[1024]);
@@ -33,7 +33,7 @@ public class HashUtilTests {
 	}
 
 	@Test
-	public void testNoSameToken() throws NoSuchAlgorithmException {
+	void testNoSameToken() throws NoSuchAlgorithmException {
 		List<byte[]> tokens = new ArrayList<>();
 		for (int i = 0; i < 1024; i++) {
 			byte[] token = HashUtil.generateToken();
@@ -45,7 +45,7 @@ public class HashUtilTests {
 	}
 
 	@Test
-	public void testNoSameShortToken() throws NoSuchAlgorithmException {
+	void testNoSameShortToken() throws NoSuchAlgorithmException {
 		List<byte[]> tokens = new ArrayList<>();
 		for (int i = 0; i < 1024; i++) {
 			byte[] token = HashUtil.generateShortToken();
