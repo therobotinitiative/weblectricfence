@@ -66,10 +66,8 @@ public class Permission {
 	}
 
 	private static boolean matchParts(String[] parts1, String[] parts2) {
-		if (parts2.length > parts1.length) {
-			if (!Permission.isLastWildCard(parts1)) {
-				return false;
-			}
+		if (parts2.length > parts1.length && !Permission.isLastWildCard(parts1)) {
+			return false;
 		}
 		if (parts1.length > parts2.length) {
 			if (!Permission.isLastWildCard(parts2)) {
