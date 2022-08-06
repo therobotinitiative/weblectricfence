@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.BeanInitializationException;
 
 import com.orbital3d.web.security.weblectricfence.configuration.FenceConfig;
 import com.orbital3d.web.security.weblectricfence.configuration.impl.InternalConfigImpl;
@@ -47,7 +48,7 @@ public class TestInternalConfigImpl {
 		String[] paths = new String[] { "{}", "@&%", "/{}", "/@&%", "/{}/", "/@&%/" };
 		for (String path : paths) {
 			when(c.secureContextRoot()).thenReturn(path);
-			assertThrows(RuntimeException.class, () -> {
+			assertThrows(BeanInitializationException.class, () -> {
 				Method m = InternalConfigImpl.class.getDeclaredMethod("prepareConfiguration");
 				m.setAccessible(true);
 				try {
