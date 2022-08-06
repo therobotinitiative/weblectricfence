@@ -28,41 +28,41 @@ public class Permission {
 	private static final String PERMISSION_SEPARATOR = ":";
 	private static final String WILDCARD = "*";
 
-	private final String permission;
+	private final String value;
 
 	private transient String[] parts;
 
 	// Enforce static factory method usage.
-	private Permission(String permission) {
-		this.permission = permission;
-		this.parts = permission.split(PERMISSION_SEPARATOR);
+	private Permission(String value) {
+		this.value = value;
+		this.parts = value.split(PERMISSION_SEPARATOR);
 	}
 
 	/**
 	 * @return Full permission string
 	 */
-	public String getPermission() {
-		return permission;
+	public String getValue() {
+		return value;
 	}
 
 	/**
 	 * @see Permission#isPermitted(String)
 	 */
-	public boolean isPermitted(final Permission permission) {
-		return isPermitted(permission.permission);
+	public boolean isPermitted(final Permission value) {
+		return isPermitted(value.value);
 	}
 
 	/**
 	 * Write javadocs.
 	 * 
-	 * @param permission {@link Permission} to check
+	 * @param value {@link Permission} to check
 	 * @return true if the given permission is permitted; otherwise false
 	 */
-	public boolean isPermitted(final String permission) {
-		if (permission.equals(WILDCARD)) {
+	public boolean isPermitted(final String value) {
+		if (value.equals(WILDCARD)) {
 			return true;
 		}
-		return Permission.matchParts(parts, permission.split(Permission.PERMISSION_SEPARATOR));
+		return Permission.matchParts(parts, value.split(Permission.PERMISSION_SEPARATOR));
 	}
 
 	private static boolean matchParts(String[] parts1, String[] parts2) {
@@ -115,7 +115,7 @@ public class Permission {
 	 */
 	@Override
 	public String toString() {
-		return "[" + permission + "]";
+		return "[" + value + "]";
 	}
 
 	/**
