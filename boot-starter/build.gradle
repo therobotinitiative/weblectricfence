@@ -41,7 +41,6 @@ java {
 group = 'com.orbital3d.web.security'
 version = "${weblectric_fence_version}"
 sourceCompatibility = '11'
-//artifactId = 'we-spring-boot-starter'
 
 dependencies {
 	implementation "org.springframework.boot:spring-boot-autoconfigure:${spring_boot_version}"
