@@ -23,7 +23,7 @@ import com.orbital3d.web.security.weblectricfence.configuration.InternalConfig;
 import com.orbital3d.web.security.weblectricfence.type.Permission;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE - 1)
+@Order(Ordered.HIGHEST_PRECEDENCE - 22)
 public class AuthorizationFilter extends OncePerRequestFilter {
 	private static final Logger LOG = LoggerFactory.getLogger(AuthorizationFilter.class);
 

@@ -21,7 +21,7 @@ import com.orbital3d.web.security.weblectricfence.exception.AuthenticationExcept
 import com.orbital3d.web.security.weblectricfence.util.FenceUtil;
 
 @Component
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.HIGHEST_PRECEDENCE - 21)
 public class AuthenticationFilter extends OncePerRequestFilter {
 	private static final Logger LOG = LoggerFactory.getLogger(AuthenticationFilter.class);
 

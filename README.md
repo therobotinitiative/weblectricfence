@@ -12,7 +12,7 @@ which contains the paths not requiring authentication, /login for example.
 
 # Setup
 
-# WEConfig
+# FenceConfig
 
 The implementing bean will give applicationspecific configuration
 
@@ -29,3 +29,10 @@ bean which MUST be provided by the application.
 The authorization filter uses this interface to determine if the requested path needs a specific permission. Implementing bean determines how the path is matched.
 DefaultAuthorizationMatcher is provided which uses ANT styled path matching. Application can provide application specific implementation or use the default
 implementation. This bean is required. Authorization is performed only if the path is under the specified secure context root.
+
+## FilterExceptionHandler
+
+FilterExceptionHandler can be used to capture filter level exceptions and handle them accordingly. If the bean is not present the exception is handled as normally.
+This gives the ability to create centralized exception handler in the filter level.
+
+### AbstractFilterExceptionHandler
