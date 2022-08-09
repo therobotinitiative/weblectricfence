@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -73,6 +74,7 @@ class TestFilterException {
 		injectHandler(feh);
 		HttpServletRequest req = new MockHttpServletRequest();
 		HttpServletResponse res = new MockHttpServletResponse();
+		when(feh.handleException(ae, req, res)).thenReturn(true);
 		doThrow(ae).when(fc).doFilter(req, res);
 		assertDoesNotThrow(() -> {
 			ef.doFilter(req, res, fc);
@@ -88,6 +90,7 @@ class TestFilterException {
 		injectHandler(feh);
 		HttpServletRequest req = new MockHttpServletRequest();
 		HttpServletResponse res = new MockHttpServletResponse();
+		when(feh.handleException(ae, req, res)).thenReturn(true);
 		doThrow(ae).when(fc).doFilter(req, res);
 		assertDoesNotThrow(() -> {
 			ef.doFilter(req, res, fc);
@@ -103,6 +106,7 @@ class TestFilterException {
 		injectHandler(feh);
 		HttpServletRequest req = new MockHttpServletRequest();
 		HttpServletResponse res = new MockHttpServletResponse();
+		when(feh.handleException(ae, req, res)).thenReturn(true);
 		doThrow(ae).when(fc).doFilter(req, res);
 		assertDoesNotThrow(() -> {
 			ef.doFilter(req, res, fc);
@@ -134,13 +138,13 @@ class TestFilterException {
 			IllegalArgumentException, IllegalAccessException {
 		FilterExceptionHandler feh = new FilterExceptionHandler() {
 			@Override
-			public void handleException(Exception exception, HttpServletRequest request, HttpServletResponse response) {
+			public boolean handleException(Exception exception, HttpServletRequest request,
+					HttpServletResponse response) {
 				throw new RuntimeException(exception);
 			}
 		};
 		// mock(FilterExceptionHandler.class);
 		IOException ae = mock(IOException.class);
-		IllegalArgumentException ia = mock(IllegalArgumentException.class);
 		injectHandler(feh);
 		HttpServletRequest req = new MockHttpServletRequest();
 		HttpServletResponse res = new MockHttpServletResponse();

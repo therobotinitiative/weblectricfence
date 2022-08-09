@@ -37,7 +37,9 @@ public class ExceptionFilter extends OncePerRequestFilter {
 			filterChain.doFilter(request, response);
 		} catch (Exception exception) {
 			if (filterExceptionHadler != null) {
-				filterExceptionHadler.handleException(exception, request, response);
+				if (!filterExceptionHadler.handleException(exception, request, response)) {
+					throw exception;
+				}
 			} else {
 				throw exception;
 			}

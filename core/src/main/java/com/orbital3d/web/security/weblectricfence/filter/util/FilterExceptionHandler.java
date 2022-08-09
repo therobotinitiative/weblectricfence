@@ -4,14 +4,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Interface for filter level exception handler. If the exception is not handled
- * it should be re-thrown as a cause in {@link RuntimeException}. This behaviour
- * is likely to be changed.
+ * Interface for filter level exception handler.
  * 
  * @author msiren
  * @since 0.2
  *
  */
 public interface FilterExceptionHandler {
-	void handleException(Exception exception, HttpServletRequest request, HttpServletResponse response);
+	/**
+	 * Handle exception.
+	 * 
+	 * @param exception Exception to handle
+	 * @param request   Original request
+	 * @param response  Response object
+	 * @return true if the exception was handled; false otherwise
+	 */
+	boolean handleException(Exception exception, HttpServletRequest request, HttpServletResponse response);
 }
