@@ -37,7 +37,10 @@ public final class Subject implements WebLectricSubject {
 
 	@Override
 	public Iterable<Permission> getPermissions() {
-		return Collections.unmodifiableCollection((Collection<Permission>) permissions);
+		if (permissions != null) {
+			return Collections.unmodifiableCollection((Collection<Permission>) permissions);
+		}
+		return null;
 	}
 
 	@Override
