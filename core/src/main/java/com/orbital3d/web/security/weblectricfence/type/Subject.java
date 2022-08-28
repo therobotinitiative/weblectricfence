@@ -12,6 +12,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  */
 public final class Subject implements WebLectricSubject {
+
+	/**
+	 * Generated
+	 */
+	private static final long serialVersionUID = -6930156879126510692L;
+
 	private UserIdentity identity;
 	private transient Iterable<Permission> permissions;
 	private String authenticationToken;

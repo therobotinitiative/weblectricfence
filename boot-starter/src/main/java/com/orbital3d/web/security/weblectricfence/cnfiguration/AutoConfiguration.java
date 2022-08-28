@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.request.RequestContextListener;
 
@@ -82,6 +83,12 @@ public class AutoConfiguration {
 		LOG.trace("Scanning end point for required permission");
 		if (applicationContext != null) {
 			for (String beanName : applicationContext.getBeanNamesForAnnotation(Controller.class)) {
+				String[] requestMappingPaths = {};
+				RequestMapping requestMapping = applicationContext.getAutowireCapableBeanFactory().getType(beanName)
+						.getAnnotation(RequestMapping.class);
+				if (requestMapping != null) {
+					requestMappingPaths = requestMapping.value();
+				}
 				for (Method method : applicationContext.getAutowireCapableBeanFactory().getType(beanName)
 						.getDeclaredMethods()) {
 					RequiresPermission requiresPermission = method.getAnnotation(RequiresPermission.class);
@@ -92,8 +99,17 @@ public class AutoConfiguration {
 							for (String path : paths.getLeft()) {
 								LOG.trace("Adding path with required permission: ({}) [{}]({})",
 										requiresPermission.value(), paths.getRight(), path);
-								authorizationMatcher.append(AuthorizationMatcher.EndPointContainer.of(path,
-										paths.getRight(), Permission.of(requiresPermission.value())));
+								if (requestMappingPaths.length > 0) {
+									for (String singlePath : requestMappingPaths) {
+										authorizationMatcher
+												.append(AuthorizationMatcher.EndPointContainer.of(singlePath + path,
+														paths.getRight(), Permission.of(requiresPermission.value())));
+
+									}
+								} else {
+									authorizationMatcher.append(AuthorizationMatcher.EndPointContainer.of(path,
+											paths.getRight(), Permission.of(requiresPermission.value())));
+								}
 							}
 						}
 					}
