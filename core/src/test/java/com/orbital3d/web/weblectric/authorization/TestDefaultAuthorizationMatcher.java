@@ -116,4 +116,17 @@ class TestDefaultAuthorizationMatcher {
 		Assertions.assertEquals(p2, am.requiredPermission(path2, RequestMethod.GET));
 	}
 
+	@Test
+	void testPathMatching() {
+		String[] paths = { "/path/path/what", "path/to/something/new", "/path/parameter/specific" };
+		String[] test = { "/path/", "/path", "/path/to/something/else", "/path/parameter", };
+		Permission perm = Permission.of("permission");
+		for (String p : paths) {
+			am.append(EndPointContainer.of(p, RequestMethod.GET, perm));
+		}
+		for (String t : test) {
+			Assertions.assertNull(am.requiredPermission(t, RequestMethod.GET));
+		}
+	}
+
 }

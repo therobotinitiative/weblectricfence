@@ -43,7 +43,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 		Permission permission = authorizationMatcher.requiredPermission(request.getRequestURI(),
 				RequestMethod.valueOf(request.getMethod()));
-		if (permission != null && pathMatcher.matchStart(internalConfig.secureContextRoot(), request.getRequestURI())) {
+		if (permission != null && pathMatcher.match(internalConfig.secureContextRoot(), request.getRequestURI())) {
 			LOG.trace("Authoring URI {} requiring permission {}", request.getRequestURI(), permission);
 			authorizationWorker.authorize(permission);
 		}
