@@ -11,6 +11,11 @@ import com.orbital3d.web.security.weblectricfence.authentication.AuthenticationT
  */
 public class UnsupportedAuthenticationTokenException extends RuntimeException {
 
+	/**
+	 * Generated.
+	 */
+	private static final long serialVersionUID = -5463062509801355214L;
+
 	public UnsupportedAuthenticationTokenException() {
 		super();
 	}
