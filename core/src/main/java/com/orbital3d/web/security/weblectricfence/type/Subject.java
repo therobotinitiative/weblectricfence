@@ -2,6 +2,7 @@ package com.orbital3d.web.security.weblectricfence.type;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -89,6 +90,20 @@ public final class Subject implements WebLectricSubject {
 
 	public static Subject of(UserIdentity identity) {
 		return new Subject(identity, null, null, null);
+	}
+
+	@Override
+	public boolean isPermitted(Permission permission) {
+		if (permissions != null) {
+			Iterator<Permission> permissionsIterator = permissions.iterator();
+			while (permissionsIterator.hasNext()) {
+				Permission permissionToken = permissionsIterator.next();
+				if (permissionToken.isPermitted(permission)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

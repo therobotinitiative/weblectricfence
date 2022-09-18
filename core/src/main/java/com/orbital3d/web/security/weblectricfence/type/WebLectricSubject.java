@@ -55,4 +55,11 @@ public interface WebLectricSubject extends Serializable {
 	 * @param refreshToken Refresh token for the subject
 	 */
 	void setRefreshToken(String refreshToken);
+
+	/**
+	 * @param ermission {@link Permission} to check
+	 * @return true if the subject is has sufficient permission; will always return
+	 *         false f permissions for the subject is not set
+	 */
+	boolean isPermitted(Permission ermission);
 }
